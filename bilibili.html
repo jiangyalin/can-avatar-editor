@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>仿哔哩哔哩头像上传</title>
+		<link rel="stylesheet" href="css/index.css" />
+	</head>
+	<body>
+		<div class="main">
+			<div class="box">
+				<div class="box_body">
+					<div class="box_le">
+						<div class="box_le_main">
+							<img src="" class="box_le_img my_img_wid j-img-ago" id="j-img-1" />
+							<img src="" class="box_le_img my_img_wid j-img-back" id="j-img-2" />
+							<div class="box_le_mb"></div>
+						</div>
+						<p class="box_le_p">当前图片</p>
+					</div>
+					<div class="box_ri">
+						<div class="box_ri_main">
+							<label for="input_img" class="label">
+								<div class="canvas_ma">
+									<canvas class="canvas" id="canvas" width="180px" height="180px"></canvas>
+								</div>
+							</label>
+						</div>
+					</div>
+					<input type="file" id="input_img" class="input_img" accept="image/png,jpeg" />
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="js/jquery-2.1.0.js" ></script>
+	<script type="text/javascript" src="js/index.js" ></script>
+</html>
