@@ -18,10 +18,13 @@ $(function(){
 			}
 			$(".j-img-back").attr("src",image.src);
 			$(".j-img-ago").attr("src",image.src);
-			$(".j-img-back").css({"top":($(".box_ri_main").height()-$(".j-img-back").height())/2+"px","left":($(".box_ri_main").width()-$(".j-img-back").width())/2+"px"});
-			$(".j-img-ago").css({"top":($(".box_ri_main").height()-$(".j-img-back").height())/2+"px","left":($(".box_ri_main").width()-$(".j-img-back").width())/2+"px"});
-			$(".box_le_main").css({"border-radius":"0px"});
+			$(".box_le_main").width($(".j-img-back").width()).height($(".j-img-back").height()).css({"top":($(".box_ri_main").height()-$(".j-img-back").height())/2+"px","left":($(".box_ri_main").width()-$(".j-img-back").width())/2+"px"});
+			$(".box_le_ma").css({"border-radius":"0px"});
 
+			ParentTop=$(".box_le_main").offset().top;//移动区域所在的top位置
+			ParentLeft=$(".box_le_main").offset().left;//移动区域所在的left位置
+			ParenWidth=$(".box_le_main").width()-$(".box_le_mb").width();//移动区域所在的宽度
+			ParenHeight=$(".box_le_main").height()-$(".box_le_mb").height();//移动区域所在的高度
 		}
 	})
 	
@@ -31,10 +34,12 @@ $(function(){
 	var ThisHover=false;//当前鼠标是否在元素上状态
 	var ClaRangeTop=0;//鼠标在元素中的top位置
 	var ClaRangeLeft=0;//鼠标在元素中的left位置
-	var ParentTop=$(".box_le_main").offset().top;//移动区域所在的top位置
-	var ParentLeft=$(".box_le_main").offset().left;//移动区域所在的left位置
-	var ParenWidth=$(".box_le_main").width()-$(".box_le_mb").width();//移动区域所在的宽度
-	var ParenHeight=$(".box_le_main").height()-$(".box_le_mb").height();//移动区域所在的高度
+	var ParentTop;//移动区域所在的top位置
+	var ParentLeft;//移动区域所在的left位置
+	var ParenWidth;//移动区域所在的宽度
+	var ParenHeight;//移动区域所在的高度
+	var ThisTop;//截取区域top
+	var ThisLeft;//截取区域left
 	$(".box_le_mb").hover(function(){
 		ThisHover=true;
 	},function(){
@@ -44,6 +49,7 @@ $(function(){
 		ThisMou=true;
 		ClaRangeTop=ev.pageY-$(this).offset().top;
 		ClaRangeLeft=ev.pageX-$(this).offset().left;
+		console.log("kkk"+ClaRangeLeft)
 	})
 	$(".box_le_mb").mouseup(function(ev){
 		ThisMou=false;
@@ -55,22 +61,20 @@ $(function(){
 		var theImage=new Image();
 		theImage.src=$(".j-img-back").attr("src");
 		//取得截取坐标
-		var x=(ev.pageX-ParentLeft-ClaRangeLeft-($(".box_ri_main").width()-$(".j-img-back").width())/2)/$(".j-img-back").width()*theImage.width;
-		var y=(ev.pageY-ParentTop-ClaRangeTop-($(".box_ri_main").height()-$(".j-img-back").height())/2)/$(".j-img-back").height()*theImage.height;
+		var x=ThisTop/$(".j-img-back").width()*theImage.width;
+		var y=ThisLeft/$(".j-img-back").height()*theImage.height;
 		var thewidth=theImage.width/thisimg.width*50;
 		var theheight=theImage.height/thisimg.height*50;
 		ctx.drawImage(thisimg,x,y,thewidth,theheight, 0,0,180,180);
 
 	})
 	$(".box_le_mb").mousemove(function(ev){
-		if(ThisMou==true && ThisHover==true){
-			var ThisTop=ev.pageY-ParentTop-ClaRangeTop;
-			var ThisLeft=ev.pageX-ParentLeft-ClaRangeLeft;
-			if(ThisTop>=0 && ThisTop<=ParenHeight || ThisLeft>=0 && ThisLeft<=ParenWidth){
+		if(ThisMou==true){
+			ThisTop=ev.pageY-ParentTop-ClaRangeTop;
+			ThisLeft=ev.pageX-ParentLeft-ClaRangeLeft;
+			if(ThisTop>=0 && ThisTop<=ParenHeight && ThisLeft>=0 && ThisLeft<=ParenWidth){
 				$(this).css("transform","translate("+ThisLeft+"px,"+ThisTop+"px)");
-				$(".j-img-ago").css("clip","rect("+(ThisTop-($(".box_ri_main").height()-$(".j-img-back").height())/2)+"px,"+(ThisLeft+50-($(".box_ri_main").width()-$(".j-img-back").width())/2)+"px,"+(ThisTop+50-($(".box_ri_main").height()-$(".j-img-back").height())/2)+"px,"+(ThisLeft-($(".box_ri_main").width()-$(".j-img-back").width())/2)+"px)");
-				console.log("ClaRangeTop=",ClaRangeTop)
-				console.log("ClaRangeLeft=",ClaRangeLeft)
+				$(".j-img-ago").css("clip","rect("+ThisTop+"px,"+(ThisLeft+50)+"px,"+(ThisTop+50)+"px,"+ThisLeft+"px)");
 			}
 		}
 	})
