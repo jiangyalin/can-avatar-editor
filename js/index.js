@@ -49,9 +49,8 @@ $(function(){
 		ThisMou=true;
 		ClaRangeTop=ev.pageY-$(this).offset().top;
 		ClaRangeLeft=ev.pageX-$(this).offset().left;
-		console.log("kkk"+ClaRangeLeft)
 	})
-	$(".box_le_mb").mouseup(function(ev){
+	$(".box_le_mb").mouseup(function(){
 		ThisMou=false;
 
 		//截取图片
@@ -61,8 +60,8 @@ $(function(){
 		var theImage=new Image();
 		theImage.src=$(".j-img-back").attr("src");
 		//取得截取坐标
-		var x=ThisTop/$(".j-img-back").width()*theImage.width;
-		var y=ThisLeft/$(".j-img-back").height()*theImage.height;
+		var x=ThisLeft/$(".j-img-back").width()*theImage.width;
+		var y=ThisTop/$(".j-img-back").height()*theImage.height;
 		var thewidth=theImage.width/thisimg.width*50;
 		var theheight=theImage.height/thisimg.height*50;
 		ctx.drawImage(thisimg,x,y,thewidth,theheight, 0,0,180,180);

@@ -22,22 +22,21 @@
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	border: 1px solid #DDDDDD;
-	padding: 20px;
+	padding: 40px 20px 20px 20px;
 }
 .box_body{
 	width: 422px;
-	height: 222px;
 	margin: 0px auto;
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
-	padding-top: 20px;
+	overflow: auto;
 }
 .box_le{
 	width: 182px;
-	height: 100%;
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	float: left;
+	overflow: auto;
 }
 .box_le_ma{
 	width: 100%;
@@ -48,7 +47,7 @@
 	border-radius: 5px;
 	overflow: hidden;
 	position: relative;
-	background-color: rgba(0,0,0,0.75);
+	background-color: rgba(0,0,0,0.7);
 }
 .box_le_main{
 	width: 100%;
@@ -89,7 +88,19 @@
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	border: 1px solid #000;
-	transform: translate(10px,30px);
+	transform: translate(0px,0px);
+	cursor: move;
+}
+.box_le_mb_co{
+	position: absolute;
+	bottom: -3px;
+	right: -3px;
+	width: 6px;
+	height: 6px;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	border: 1px solid rgba(255,255,255,0.5);
+	cursor: se-resize;
 }
 .box_mb_to{
 	position: absolute;
@@ -166,8 +177,6 @@
 	left: 0px;
 	cursor: pointer;
 	z-index: 99;
-}
-.label:hover{
 	background-image: url(../img/sc_bg.png);
 }
 .canvas_ma{
