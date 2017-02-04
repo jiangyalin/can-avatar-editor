@@ -87,19 +87,19 @@
 	height: 50px;
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
-	border: 1px solid #000;
+	border: 1px solid #fff;
 	transform: translate(0px,0px);
 	cursor: move;
 }
 .box_le_mb_co{
 	position: absolute;
-	bottom: -3px;
-	right: -3px;
-	width: 6px;
-	height: 6px;
+	bottom: -5px;
+	right: -5px;
+	width: 10px;
+	height: 10px;
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
-	border: 1px solid rgba(255,255,255,0.5);
+	border: 2px solid rgba(255,255,255,0.5);
 	cursor: se-resize;
 }
 .box_mb_to{
