@@ -67,6 +67,7 @@
 .j-img-ago{
 	position: absolute;
 	clip: rect(0px,50px,50px,0px);
+	/*transition: 0.1s;*/
 }
 .j-img-back{
 	opacity: 0.3;
@@ -90,6 +91,7 @@
 	border: 1px solid #fff;
 	transform: translate(0px,0px);
 	cursor: move;
+	/*transition: 0.1s;*/
 }
 .box_le_mb_co{
 	position: absolute;

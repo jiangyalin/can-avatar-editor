@@ -20,9 +20,8 @@ $(function(){
 				.css({"top":($(".box_le_ma").height()-$(".box_le_main").height())/2+"px","left":($(".box_le_ma").width()-$(".box_le_main").width())/2+"px"});
 			$(".box_le_ma").css({"border-radius":"0px"});
 
-
-			ThisWidth=$(".box_le_mb").width();//截取区域width
-			ThisHeight=$(".box_le_mb").height();//截取区域height
+			ThisWidth=$(".box_le_mb").width()+2;//截取区域width
+			ThisHeight=$(".box_le_mb").height()+2;//截取区域height
 			ParentTop=$(".box_le_main").offset().top;//移动区域所在的top位置
 			ParentLeft=$(".box_le_main").offset().left;//移动区域所在的left位置
 			ParenWidth=$(".box_le_main").width()-ThisWidth;//移动区域所在的宽度
@@ -44,8 +43,8 @@ $(function(){
 	var ParenHeight;//移动区域所在的高度
 	var ThisTop;//截取区域top
 	var ThisLeft;//截取区域left
-	var ThisWidth=$(".box_le_mb").width();//截取区域width
-	var ThisHeight=$(".box_le_mb").height();//截取区域height
+	var ThisWidth=$(".box_le_mb").width()+2;//截取区域width
+	var ThisHeight=$(".box_le_mb").height()+2;//截取区域height
 	$(".box_le_mb").hover(function(){
 		ThisConHover=true;
 	},function(){
@@ -71,13 +70,12 @@ $(function(){
 		var y=ThisTop/$(".j-img-back").height()*theImage.height;
 		var thewidth=theImage.width/thisimg.width*ThisWidth;
 		var theheight=theImage.height/thisimg.height*ThisHeight;
-		console.log(ThisWidth)
 		ctx.drawImage(thisimg,x,y,thewidth,theheight, 0,0,180,180);
 
 	})
 	//截取区域拖动效果
 	$(".box_le_mb").mousemove(function(ev){
-		console.log(ThisConMou,ThisConHover)
+		// console.log(ThisConMou,ThisConHover)
 		if(ThisConMou==true && ThisConHover==true){
 			ThisTop=ev.pageY-ParentTop-ClaRangeTop;
 			ThisLeft=ev.pageX-ParentLeft-ClaRangeLeft;
@@ -114,5 +112,21 @@ $(function(){
 	})
 	$(".box_le_ma").mousedown(function () {
 		console.log(ThisConMou,ThisConHover,ThisSizeMou,ThisSizeHover)
+	})
+	$(document).mouseup(function () {
+		ThisConMou=false;
+		//截取图片
+		var canvas=document.getElementById("canvas");
+		var ctx=canvas.getContext("2d");
+		var thisimg=document.getElementById("j-img-2");
+		var theImage=new Image();
+		theImage.src=$(".j-img-back").attr("src");
+		//取得截取坐标
+		var x=ThisLeft/$(".j-img-back").width()*theImage.width;
+		var y=ThisTop/$(".j-img-back").height()*theImage.height;
+		var thewidth=theImage.width/thisimg.width*ThisWidth;
+		var theheight=theImage.height/thisimg.height*ThisHeight;
+		console.log(x+"kkk"+y)
+		ctx.drawImage(thisimg,x,y,thewidth,theheight, 0,0,180,180);
 	})
 })
