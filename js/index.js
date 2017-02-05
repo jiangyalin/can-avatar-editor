@@ -23,7 +23,7 @@ $(function(){
 	$("#input_img").change(function(){
 		var file=this.files[0];//得到文件
 		var reader=new FileReader();//新建空文件属性对象
-		reader.readAsDataURL(file);//传入文件
+		if(file!=undefined)reader.readAsDataURL(file);//传入文件
 		reader.onload=function(){
 			var url=reader.result;//将得到的文件转成data64编码
 			image.src=url;//将input得到的url赋值给新建的图片对象
@@ -95,7 +95,7 @@ $(function(){
 		var y=ThisTop/$(".j-img-back").height()*imageHeight;
 		var thewidth=imageWidth/thisimg.width*ThisWidth;
 		var theheight=imageHeight/thisimg.height*ThisHeight;
-		ctx.drawImage(thisimg, x, y, thewidth, theheight, 0, 0, 180, 180);
+		ctx.drawImage(image, x, y, thewidth, theheight, 0, 0, 180, 180);
 
 	})
 	$(".box_le_mb_co").mousedown(function () {
