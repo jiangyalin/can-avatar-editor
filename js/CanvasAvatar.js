@@ -117,15 +117,6 @@ var CanvasAvatar=(function () {
             console.log("d"+ev.pageX+"n"+ParentLeft)
         }
     })
-    // $(".box_le_ma").mouseup(function () {
-    // 	ThisConMou=false;
-    // 	// ThisConHover=false;
-    // 	ThisSizeMou=false;
-    // 	// ThisSizeHover=false;
-    // })
-    // $(".box_le_ma").mousedown(function () {
-    // 	console.log(ThisConMou,ThisConHover,ThisSizeMou,ThisSizeHover)
-    // })
 
 })();
 
