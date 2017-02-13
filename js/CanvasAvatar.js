@@ -42,6 +42,10 @@ var CanvasAvatar=(function () {
                 .css({"top":($(".box_le_ma").height()-$(".box_le_main").height())/2+"px","left":($(".box_le_ma").width()-$(".box_le_main").width())/2+"px"});
             $(".box_le_ma").css({"border-radius":"0px"});
 
+            //重置剪切区域位置
+            $(".box_le_mb").css("transform","translate(0px,0px)");
+            $(".j-img-ago").css("clip","rect(0px,50px,50px,0px)");
+
             ThisWidth=$(".box_le_mb").width()+2;//截取区域width
             ThisHeight=$(".box_le_mb").height()+2;//截取区域height
             ParentTop=$(".box_le_main").offset().top;//移动区域所在的top位置
