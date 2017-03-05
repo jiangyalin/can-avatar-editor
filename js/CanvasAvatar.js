@@ -134,7 +134,7 @@ var CanvasAvatar=(function () {
             var r = type.match(/png|jpeg|bmp|gif/)[0];
             return 'image/' + r;
         };
-        imgData = imgData.replace(_fixType(type),'image/octet-stream');
+        imgData = imgData.replace(_fixType(type),'image/octet-stream');//替换图片类型
         var saveFile = function(data, filename){
             var save_link = document.createElementNS('http://www.w3.org/1999/xhtml', 'a');
             save_link.href = data;
