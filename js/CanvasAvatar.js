@@ -18,6 +18,8 @@ var CanvasAvatar=(function () {
     var image=new Image();//新建一个空的图片对象
     var imageWidth;//图片的原始宽度
     var imageHeight;//图片的原始高度
+    var canvas=document.getElementById("canvas");//得到canvas对象
+    var ctx=canvas.getContext("2d");
 
     //选择图片
     $("#input_img").change(function(){
@@ -81,8 +83,6 @@ var CanvasAvatar=(function () {
         }
     })
 
-    var canvas=document.getElementById("canvas");
-    var ctx=canvas.getContext("2d");
     //当鼠标抬起是截取图片
     $(document).mouseup(function(){
         ThisConMou=false;
@@ -121,9 +121,14 @@ var CanvasAvatar=(function () {
             console.log("d"+ev.pageX+"n"+ParentLeft)
         }
     })
+
+    //图片下载
     $(".dow").click(function () {
-        var type = "jpg";
-        var imgData = ctx.toDataURL(type);
+        imgdow('png')
+    })
+    
+    function imgdow(type) {
+        var imgData = canvas.toDataURL(type);//得到截取区域的data64位编码
         var _fixType = function(type) {
             type = type.toLowerCase().replace(/jpg/i, 'jpeg');
             var r = type.match(/png|jpeg|bmp|gif/)[0];
@@ -141,7 +146,7 @@ var CanvasAvatar=(function () {
         };
         var filename = 'baidufe_' + (new Date()).getTime() + '.' + type;
         saveFile(imgData,filename);
-    })
+    }
 
 })();
 
