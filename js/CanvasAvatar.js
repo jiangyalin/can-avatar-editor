@@ -81,13 +81,13 @@ var CanvasAvatar=(function () {
         }
     })
 
+    var canvas=document.getElementById("canvas");
+    var ctx=canvas.getContext("2d");
     //当鼠标抬起是截取图片
     $(document).mouseup(function(){
         ThisConMou=false;
 
         //截取图片
-        var canvas=document.getElementById("canvas");
-        var ctx=canvas.getContext("2d");
         var thisimg=document.getElementById("j-img-2");
         //截取越界重置
         if(ThisTop<0)ThisTop=0;
@@ -120,6 +120,27 @@ var CanvasAvatar=(function () {
             $(".box_le_mb").width(ev.pageX-ParentLeft).height(ev.pageY-ParentTop);
             console.log("d"+ev.pageX+"n"+ParentLeft)
         }
+    })
+    $(".dow").click(function () {
+        var type = "jpg";
+        var imgData = ctx.toDataURL(type);
+        var _fixType = function(type) {
+            type = type.toLowerCase().replace(/jpg/i, 'jpeg');
+            var r = type.match(/png|jpeg|bmp|gif/)[0];
+            return 'image/' + r;
+        };
+        imgData = imgData.replace(_fixType(type),'image/octet-stream');
+        var saveFile = function(data, filename){
+            var save_link = document.createElementNS('http://www.w3.org/1999/xhtml', 'a');
+            save_link.href = data;
+            save_link.download = filename;
+
+            var event = document.createEvent('MouseEvents');
+            event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+            save_link.dispatchEvent(event);
+        };
+        var filename = 'baidufe_' + (new Date()).getTime() + '.' + type;
+        saveFile(imgData,filename);
     })
 
 })();

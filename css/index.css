@@ -197,5 +197,13 @@
 .input_img{
 	display: none;
 }
+.dow{
+    position: absolute;
+    top:0;
+    right: 0;
+    z-index: 99;
+    font-size: 12px;
+    color: #000;
+}
 
 
