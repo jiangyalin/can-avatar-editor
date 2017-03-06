@@ -144,7 +144,8 @@ var CanvasAvatar=(function () {
             event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
             save_link.dispatchEvent(event);
         };
-        var filename = 'baidufe_' + (new Date()).getTime() + '.' + type;
+        var filename = 'img_' + (new Date()).getTime() + '.' + type;//给下载的图片命名
+        console.log((new Date()).getTime())
         saveFile(imgData,filename);
     }
 
