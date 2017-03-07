@@ -142,12 +142,11 @@ var CanvasAvatar=(function () {
             save_link.download = filename;
             //实例化事件对象
             var event = document.createEvent('MouseEvents');
-            event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+            event.initEvent('click', true, true);
             //触发点击事件
             save_link.dispatchEvent(event);
         };
         var filename = 'img_' + (new Date()).getTime() + '.' + type;//给下载的图片命名
-        console.log((new Date()).getTime())
         saveFile(imgData,filename);
     }
 
