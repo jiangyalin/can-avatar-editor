@@ -126,7 +126,8 @@ var CanvasAvatar=(function () {
     $(".dow").click(function () {
         imgdow('png')
     })
-    
+
+    //图片下载功能
     function imgdow(type) {
         var imgData = canvas.toDataURL(type);//得到截取区域的data64位编码
         var _fixType = function(type) {
