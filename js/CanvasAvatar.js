@@ -139,9 +139,10 @@ var CanvasAvatar=(function () {
             var save_link = document.createElementNS('http://www.w3.org/1999/xhtml', 'a');
             save_link.href = data;
             save_link.download = filename;
-
+            //实例化事件对象
             var event = document.createEvent('MouseEvents');
             event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+            //触发点击事件
             save_link.dispatchEvent(event);
         };
         var filename = 'baidufe_' + (new Date()).getTime() + '.' + type;
