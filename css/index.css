@@ -40,10 +40,18 @@
 	display: block;
 }
 .cae-img-tp{
+    clip: rect(0px,50px,50px,0px);
+    z-index: 9;
+}
+.cae-img-bm{
+    z-index: 11;
+    opacity: 1;
+}
+.cae-active .cae-img-tp{
 	clip: rect(0px,50px,50px,0px);
 	z-index: 9;
 }
-.cae-img-bm{
+.cae-active .cae-img-bm{
 	z-index: 1;
 	opacity: 0.3;
 }

@@ -36,6 +36,9 @@ var CanvasAvatar=(function () {
             imageWidth = image.width;//图片的原始宽度
             imageHeight = image.height;//图片的原始高度
 
+            //激活功能
+            $(".j-cae-co").addClass("cae-active");
+
             //图像居中
             $(".j-cae-co").css({"width":"100%","height":"100%","top":"0","left":"0"});
             if(imageWidth < imageHeight){
