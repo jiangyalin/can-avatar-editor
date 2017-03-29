@@ -1,42 +1,67 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<title>图片剪切上传</title>
-		<link rel="stylesheet" href="css/index.css" />
-	</head>
-	<body>
-		<div class="main">
-			<div class="box">
-				<div class="box_body">
-					<div class="box_le">
-						<div class="box_le_ma">
-							<div class="box_le_main">
-								<img src="" class="box_le_img my_img_wid j-img-ago" id="j-img-1" />
-								<img src="" class="box_le_img my_img_wid j-img-back" id="j-img-2" />
-								<div class="box_le_mb">
-									<!--<div class="box_le_mb_co"></div>-->
-								</div>
-							</div>
-						</div>
-						<p class="box_le_p">当前图片</p>
-                        <div class="zoom"></div>
-					</div>
-					<div class="box_ri">
-						<div class="box_ri_main">
-							<label for="input_img" class="label">
-								<div class="canvas_ma">
-									<canvas class="canvas" id="canvas" width="180px" height="180px"></canvas>
-								</div>
-							</label>
-                            <div class="dow">下载</div>
+<head>
+	<meta charset="UTF-8">
+	<title>图片剪切上传</title>
+	<link rel="stylesheet" href="css/index.css" />
+	<link rel="stylesheet" href="css/k.css" />
+</head>
+<body>
+	<div class="cae-bd">
+		<div class="cae-mn">
+			<div class="cae-fl">
+				<div class="cae-mnc j-cae-mnc">
+					<div class="cae-co j-cae-co">
+						<img class="cae-img cae-img-tp cae-img-wi cae-img-he j-cae-img j-cae-img-tp" src="img/ion.png" />
+						<img class="cae-img cae-img-bm cae-img-wi cae-img-he j-cae-img j-cae-img-bm" src="img/ion.png" />
+						<div class="cae-mb j-cae-mb">
+
 						</div>
 					</div>
-					<input type="file" id="input_img" class="input_img" accept="image/png,jpeg" />
 				</div>
 			</div>
+			<div class="cae-fr">
+				<div class="cae-mnc">
+					<label class="cae-lel" for="cae-fle">
+						<canvas class="cae-cas" id="cae-canvas" width="180px" height="180px"></canvas>
+					</label>
+				</div>
+				<input class="cae-fle" id="cae-fle" type="file" accept="image/png,jpeg" />
+			</div>
 		</div>
-	</body>
-	<script type="text/javascript" src="js/jquery-2.1.0.js"></script>
-    <script type="text/javascript" src="js/CanvasAvatar.js"></script>
+	</div>
+	<div class="main">
+		<div class="box">
+			<div class="box_body">
+				<div class="box_le">
+					<div class="box_le_ma">
+						<div class="box_le_main">
+							<img src="" class="box_le_img my_img_wid j-img-ago" id="j-img-1" />
+							<img src="" class="box_le_img my_img_wid j-img-back" id="j-img-2" />
+							<div class="box_le_mb">
+								<!--<div class="box_le_mb_co"></div>-->
+							</div>
+						</div>
+					</div>
+					<p class="box_le_p">当前图片</p>
+					<div class="zoom"></div>
+				</div>
+				<div class="box_ri">
+					<div class="box_ri_main">
+						<label for="input_img" class="label">
+							<div class="canvas_ma">
+								<canvas class="canvas" id="canvas" width="180px" height="180px"></canvas>
+							</div>
+						</label>
+						<div class="dow">下载</div>
+					</div>
+				</div>
+				<input type="file" id="input_img" class="input_img" accept="image/png,jpeg" />
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="js/jquery-2.1.0.js"></script>
+<!--<script type="text/javascript" src="js/CanvasAvatar.js"></script>-->
+<script type="text/javascript" src="js/k.js"></script>
 </html>
