@@ -20,6 +20,8 @@ var CanvasAvatar=(function () {
     var image = new Image();//新建一个空的图片对象
     var imageWidth;//图片的原始宽度
     var imageHeight;//图片的原始高度
+    var imgConWidth;//缩略图宽度
+    var imgConHeight;//缩略图高度
     var canvas = document.getElementById("cae-canvas");//得到canvas对象
     var ctx=canvas.getContext("2d");
 
@@ -60,6 +62,15 @@ var CanvasAvatar=(function () {
             ParenHeight = $(".j-cae-co").height();//移动区域所在的高度
             ThisWidthMax = ParentLeft + ParenWidth - ThisLeft;//截取区域的宽度最大值
             ThisHeightMax = ParentTop + ParenHeight - ThisTop;//截取区域的高度最大值
+            imgConWidth = $(".j-cae-img-bm").width();//缩略图宽度
+            imgConHeight = $(".j-cae-img-bm").height();//缩略图高度
+
+            //取得截取坐标
+            var x = ThisLeft / imgConWidth * imageWidth;
+            var y = ThisTop / imgConHeight * imageHeight;
+            var thewidth = imageWidth / imgConWidth * ThisWidth;
+            var theheight = imageHeight / imgConHeight * ThisHeight;
+            ctx.drawImage(image, x, y, thewidth, theheight, 0, 0, 180, 180);
         }
     })
 
@@ -82,7 +93,10 @@ var CanvasAvatar=(function () {
         if(ThisConMou && ThisConHover){
             ThisTop = ev.pageY - ParentTop - ClaRangeTop;
             ThisLeft = ev.pageX - ParentLeft - ClaRangeLeft;
-            if(ThisTop >= 0 && ThisTop <= ParenHeight && ThisLeft >= 0 && ThisLeft <= ParenWidth){
+            var ThisRangeDiceY = ThisTop + ThisHeight;//截取区域距离拖动区间顶部的距离
+            var ThisRangeDiceX = ThisLeft + ThisWidth;//截取区域距离拖动区间左部的距离
+            //碰撞检测
+            if(ThisTop >= 0 && ThisRangeDiceY <= ParenHeight && ThisLeft >= 0 && ThisRangeDiceX <= ParenWidth){
                 $(this).css("transform","translate("+ThisLeft+"px,"+ThisTop+"px)");
                 $(".j-cae-img-tp").css("clip","rect("+ThisTop+"px,"+(ThisLeft + ThisWidth)+"px,"+(ThisTop + ThisHeight)+"px,"+ThisLeft+"px)");
             }
@@ -96,17 +110,16 @@ var CanvasAvatar=(function () {
         ThisSizeMou = false;
 
         //截取图片
-        var thisimg = document.getElementsByClassName("j-cae-img-bm")[0];
         //截取越界重置
         if(ThisTop < 0) ThisTop = 0;
-        if(ThisTop > ParenHeight) ThisTop = ParenHeight;
+        if(ThisTop > ParenHeight - ThisHeight) ThisTop = ParenHeight - ThisHeight;
         if(ThisLeft < 0) ThisLeft = 0;
-        if(ThisLeft > ParenWidth) ThisLeft = ParenWidth;
+        if(ThisLeft > ParenWidth - ThisWidth) ThisLeft = ParenWidth - ThisWidth;
         //取得截取坐标
-        var x = ThisLeft/$(".j-cae-img-bm").width() * imageWidth;
-        var y = ThisTop/$(".j-cae-img-bm").height() * imageHeight;
-        var thewidth = imageWidth/thisimg.width * ThisWidth;
-        var theheight = imageHeight/thisimg.height * ThisHeight;
+        var x = ThisLeft / imgConWidth * imageWidth;
+        var y = ThisTop / imgConHeight * imageHeight;
+        var thewidth = imageWidth / imgConWidth * ThisWidth;
+        var theheight = imageHeight / imgConHeight * ThisHeight;
         ctx.drawImage(image, x, y, thewidth, theheight, 0, 0, 180, 180);
 
         ThisWidthMax = ParentLeft + ParenWidth - ThisLeft;//截取区域的宽度最大值
