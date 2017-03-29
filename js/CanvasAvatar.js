@@ -139,7 +139,7 @@ var CanvasAvatar=(function () {
         var saveFile = function(data, filename){
             var save_link = document.createElementNS('http://www.w3.org/1999/xhtml', 'a');
             save_link.href = data;
-            save_link.download = filename;
+            save_link.download = filename;//给文件命名
             //实例化事件对象
             var event = document.createEvent('MouseEvents');
             event.initEvent('click', true, true);
