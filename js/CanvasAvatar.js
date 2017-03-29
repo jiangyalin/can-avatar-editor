@@ -92,6 +92,8 @@ var CanvasAvatar=(function () {
     //当鼠标抬起时截取图片
     $(document).mouseup(function(){
         ThisConMou = false;
+        ThisConHover = true;
+        ThisSizeMou = false;
 
         //截取图片
         var thisimg = document.getElementsByClassName("j-cae-img-bm")[0];
@@ -114,10 +116,6 @@ var CanvasAvatar=(function () {
         ThisConHover = false;
         ThisSizeMou = true;
     })
-    $("body").mouseup(function () {
-        ThisConHover = true;
-        ThisSizeMou = false;
-    })
     $(".j-cae-co").hover(function () {
         ThisSizeHover = true;
     },function () {
@@ -125,8 +123,8 @@ var CanvasAvatar=(function () {
     })
     //改变截取区域大小
     $(".j-cae-co").mousemove(function(ev){
-        var ThisWidths = ev.pageX - ParentLeft;
-        var ThisHeights = ev.pageY - ParentTop;
+        var ThisWidths = ev.pageX - ParentLeft - ThisLeft;
+        var ThisHeights = ev.pageY - ParentTop - ThisTop;
         if(ThisSizeMou && ThisSizeHover && ThisWidthMax > ThisWidths && ThisHeightMax > ThisHeights){
             ThisWidth = ThisWidths;
             ThisHeight = ThisHeights;
