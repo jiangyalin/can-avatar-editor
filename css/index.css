@@ -6,84 +6,60 @@
 	-moz-user-select: none;
 	-ms-user-select: none;
 }
-
-.main{
-	width: 800px;
-	height: 600px;
-	margin: 0px auto;
-	box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	padding-top: 100px;
-}
-.box{
+.cae-bd{
+	margin: 0 auto;
+	padding: 40px 110px;
 	width: 642px;
 	height: 417px;
-	margin: 0px auto;
-	box-sizing: border-box;
-	-moz-box-sizing: border-box;
 	border: 1px solid #DDDDDD;
-	padding: 40px 20px 20px 20px;
-}
-.box_body{
-	width: 422px;
-	margin: 0px auto;
-	box-sizing: border-box;
 	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+.cae-mn{
 	overflow: auto;
-}
-.box_le{
-	width: 182px;
-	box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	float: left;
-	overflow: auto;
-}
-.box_le_ma{
-	width: 100%;
-	height: 182px;
-	box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	border: 1px solid #DDDDDD;
-	border-radius: 5px;
-	overflow: hidden;
-	position: relative;
-	background-color: rgba(0,0,0,0.7);
-}
-.box_le_main{
-	width: 100%;
-	height: 182px;
-	box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	overflow: hidden;
-	position: relative;
-}
-.box_le_img{
-	display: block;
-	margin: 0 auto;
-	position: absolute;
-	top: 0px;
-	left: 0px;
-}
-.j-img-ago{
-	position: absolute;
-	clip: rect(0px,50px,50px,0px);
-	/*transition: 0.1s;*/
-}
-.j-img-back{
-	opacity: 0.3;
-}
-.my_img_wid{
 	width: 100%;
 	height: auto;
 }
-.my_img_hei{
-	height: 100%;
-	width: auto;
+.cae-mnc{
+	overflow: hidden;
+	position: relative;
+	width: 180px;
+	height: 180px;
+	border: 1px solid #DDDDDD;
+	background-color: #666;
 }
-.box_le_mb{
+.cae-co{
+	position: relative;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+}
+.cae-img{
+	position: absolute;
+	display: block;
+}
+.cae-img-tp{
+	clip: rect(0px,50px,50px,0px);
+	z-index: 9;
+}
+.cae-img-bm{
+	z-index: 1;
+	opacity: 0.3;
+}
+.cae-img-wi{
+	width: 100%;
+	height: auto;
+}
+.cae-img-he{
+	width: auto;
+	height: 100%;
+}
+.cae-mb{
 	position: absolute;
 	top: 0px;
 	left: 0px;
+	z-index: 10;
 	width: 50px;
 	height: 50px;
 	box-sizing: border-box;
@@ -91,9 +67,8 @@
 	border: 1px solid #fff;
 	transform: translate(0px,0px);
 	cursor: move;
-	/*transition: 0.1s;*/
 }
-.box_le_mb_co{
+.cae-mbc{
 	position: absolute;
 	bottom: -5px;
 	right: -5px;
@@ -104,104 +79,52 @@
 	border: 2px solid rgba(255,255,255,0.5);
 	cursor: se-resize;
 }
-.box_mb_to{
-	position: absolute;
+.cae-tt{
 	width: 100%;
-	height: 10px;
-	top: 0px;
-	left: 0px;
-	background-color: rgba(0,0,0,0.5);
-}
-.box_mb_ri{
-	position: absolute;
-	width: 10px;
-	height: 160px;
-	top: 10px;
-	right: 0px;
-	background-color: rgba(0,0,0,0.5);
-}
-.box_mb_bo{
-	position: absolute;
-	width: 100%;
-	height: 10px;
-	bottom: 0px;
-	left: 0px;
-	background-color: rgba(0,0,0,0.5);
-}
-.box_mb_le{
-	position: absolute;
-	width: 10px;
-	height: 160px;
-	top: 10px;
-	left: 0px;
-	background-color: rgba(0,0,0,0.5);
-}
-.box_le_xq{
-	width: 50px;
-	height: 50px;
-	box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	border: 1px solid rgba(255,255,255,1);
-	cursor: move;
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	background-color: rgba(0,0,0,1);
-}
-.box_le_p{
+	height: 40px;
 	font-size: 12px;
-	text-align: center;
-	font-weight: 700;
+	color: #4a4a4a;
 	line-height: 40px;
-	color: darkgray;
+	text-align: center;
 }
-.box_ri{
+.cae-fl{
+	float: left;
 	width: 182px;
-	height: 100%;
-	box-sizing: border-box;
-	-moz-box-sizing: border-box;
+	height: auto;
+}
+.cae-fr{
 	float: right;
+	width: 182px;
+	height: auto;
 }
-.box_ri_main{
-	width: 100%;
-	height: 182px;
-	box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	border: 1px solid #DDDDDD;
-	border-radius: 5px;
-	position: relative;
-}
-.label{
+.cae-lel{
+	display: block;
 	width: 100%;
 	height: 100%;
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	cursor: pointer;
-	z-index: 99;
 	background-image: url(../img/sc_bg.png);
+	cursor: pointer;
 }
-.canvas_ma{
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	left: 0px;
-	bottom: 0px;
-	z-index: 999;
-}
-.canvas{
-	position: relative;
-	top: 0px;
-	left: 0px;
-}
-.input_img{
+.cae-fle{
 	display: none;
 }
-.dow{
-    position: absolute;
-    top:0;
-    right: 0;
-    z-index: 99;
-    font-size: 12px;
-    color: #000;
+.cae-btn{
+	display: block;
+	margin-top: 10px;
+	width: 85px;
+	height: 30px;
+	font-size: 12px;
+	color: #4a4a4a;
+	line-height: 30px;
+	text-align: center;
+	border: 1px solid #dddddd;
+	border-radius: 5px;
+	cursor: pointer;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+.cae-btn-fl{
+	float: left;
+}
+.cae-btn-fr{
+	float: right;
 }

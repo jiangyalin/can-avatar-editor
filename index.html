@@ -4,7 +4,6 @@
 	<meta charset="UTF-8">
 	<title>图片剪切上传</title>
 	<link rel="stylesheet" href="css/index.css" />
-	<link rel="stylesheet" href="css/k.css" />
 </head>
 <body>
 	<div class="cae-bd">
@@ -15,9 +14,12 @@
 						<img class="cae-img cae-img-tp cae-img-wi cae-img-he j-cae-img j-cae-img-tp" src="img/ion.png" />
 						<img class="cae-img cae-img-bm cae-img-wi cae-img-he j-cae-img j-cae-img-bm" src="img/ion.png" />
 						<div class="cae-mb j-cae-mb">
-
+							<div class="cae-mbc j-cae-mb-btn"></div>
 						</div>
 					</div>
+				</div>
+				<div class="">
+					<p class="cae-tt">当前图片</p>
 				</div>
 			</div>
 			<div class="cae-fr">
@@ -25,43 +27,16 @@
 					<label class="cae-lel" for="cae-fle">
 						<canvas class="cae-cas" id="cae-canvas" width="180px" height="180px"></canvas>
 					</label>
+					<input class="cae-fle" id="cae-fle" type="file" accept="image/png,jpeg" />
 				</div>
-				<input class="cae-fle" id="cae-fle" type="file" accept="image/png,jpeg" />
-			</div>
-		</div>
-	</div>
-	<div class="main">
-		<div class="box">
-			<div class="box_body">
-				<div class="box_le">
-					<div class="box_le_ma">
-						<div class="box_le_main">
-							<img src="" class="box_le_img my_img_wid j-img-ago" id="j-img-1" />
-							<img src="" class="box_le_img my_img_wid j-img-back" id="j-img-2" />
-							<div class="box_le_mb">
-								<!--<div class="box_le_mb_co"></div>-->
-							</div>
-						</div>
-					</div>
-					<p class="box_le_p">当前图片</p>
-					<div class="zoom"></div>
+				<div class="">
+					<label class="cae-btn cae-btn-fl" for="cae-fle">图片上传</label>
+					<span class="cae-btn cae-btn-fr j-cae-dld">图片下载</span>
 				</div>
-				<div class="box_ri">
-					<div class="box_ri_main">
-						<label for="input_img" class="label">
-							<div class="canvas_ma">
-								<canvas class="canvas" id="canvas" width="180px" height="180px"></canvas>
-							</div>
-						</label>
-						<div class="dow">下载</div>
-					</div>
-				</div>
-				<input type="file" id="input_img" class="input_img" accept="image/png,jpeg" />
 			</div>
 		</div>
 	</div>
 </body>
 <script type="text/javascript" src="js/jquery-2.1.0.js"></script>
-<!--<script type="text/javascript" src="js/CanvasAvatar.js"></script>-->
-<script type="text/javascript" src="js/k.js"></script>
+<script type="text/javascript" src="js/CanvasAvatar.js"></script>
 </html>
