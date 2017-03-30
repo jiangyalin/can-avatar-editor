@@ -5,8 +5,11 @@ var CanvasAvatar=(function () {
     var ThisConHover = false;//当前鼠标是否在截取区域元素上状态
     var ThisSizeMou = false;//当前是否在调整大小区按下状态
     var ThisSizeHover = false;//当前是否在调整大小区素上状态
-    var ClaRangeTop = 0;//鼠标在元素中的top位置
-    var ClaRangeLeft = 0;//鼠标在元素中的left位置
+    var SchMou = false;//缩放控件是否按下状态
+    var ClaRangeTop = 0;//鼠标在截取区域元素中的top位置
+    var ClaRangeLeft = 0;//鼠标在截取区域元素中的left位置
+    var SchRangeTop = 0;//鼠标在缩放按钮元素中的top位置
+    var SchRangeLeft = 0;//鼠标在缩放按钮元素中的left位置
     var ParentTop;//移动区域所在的top位置
     var ParentLeft;//移动区域所在的left位置
     var ParenWidth;//移动区域所在的宽度
@@ -15,8 +18,8 @@ var CanvasAvatar=(function () {
     var ThisLeft;//截取区域left-相对于移动区域
     var ThisWidthMax;//截取区域的宽度最大值
     var ThisHeightMax;//截取区域的高度最大值
-    var ThisWidth = $(".j-cae-mb").width()+2;//截取区域width
-    var ThisHeight = $(".j-cae-mb").height()+2;//截取区域height
+    var ThisWidth = $(".j-cae-mb").width();//截取区域width
+    var ThisHeight = $(".j-cae-mb").height();//截取区域height
     var Rotate = 0;//偏离角度
     var image = new Image();//新建一个空的图片对象
     var imageWidth;//图片的原始宽度
@@ -159,16 +162,7 @@ var CanvasAvatar=(function () {
         $(".j-cae-co").css("transform","rotate("+Rotate+"deg)");
 
         //初始化
-        ThisWidth = $(".j-cae-mb").width();//截取区域width
-        ThisHeight = $(".j-cae-mb").height();//截取区域height
-        ParentTop = $(".j-cae-co").offset().top;//移动区域所在的top位置
-        ParentLeft = $(".j-cae-co").offset().left;//移动区域所在的left位置
-        ThisTop = 0;//截取区域top
-        ThisLeft = 0;//截取区域left
-        ParenWidth = $(".j-cae-co").width();//移动区域所在的宽度
-        ParenHeight = $(".j-cae-co").height();//移动区域所在的高度
-        ThisWidthMax = ParenWidth - ThisLeft;//截取区域的宽度最大值
-        ThisHeightMax = ParenHeight - ThisTop;//截取区域的高度最大值
+        init();
 
         //取得截取坐标
         var x = ThisLeft / imgConWidth * imageWidth;
@@ -187,7 +181,7 @@ var CanvasAvatar=(function () {
         $(".j-cae-co").css("transform","rotate("+Rotate+"deg)");
 
         //初始化
-        init()
+        init();
 
         //取得截取坐标
         var x = ThisLeft / imgConWidth * imageWidth;
@@ -198,6 +192,14 @@ var CanvasAvatar=(function () {
         ctx.rotate(90*Math.PI/180);
         ctx.translate(-90,-90);
         ctx.drawImage(image, x, y, thewidth, theheight, 0, 0, 180, 180);
+    })
+
+    //缩放
+    $(".j-sch-btn").mousedown(function(ev){
+        SchMou = true;
+        //鼠标在选中区中的位置
+        SchRangeTop = ev.pageY - $(this).offset().top;
+        SchRangeLeft = ev.pageX - $(this).offset().left;
     })
 
     //图片下载

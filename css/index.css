@@ -16,9 +16,9 @@
 	box-sizing: border-box;
 }
 .cae-mn{
-	overflow: auto;
+	/*overflow: auto;*/
 	width: 100%;
-	height: auto;
+	height: 262px;
 }
 .cae-mnc{
 	overflow: hidden;
@@ -120,6 +120,11 @@
 .cae-fle{
 	display: none;
 }
+.cae-btn-grp{
+	/*overflow: auto;*/
+	width: 100%;
+	height: 40px;
+}
 .cae-btn{
 	display: block;
 	margin-top: 10px;
@@ -141,3 +146,48 @@
 .cae-btn-fr{
 	float: right;
 }
+.cae-sch{
+	position: relative;
+	margin-top: 15px;
+	width: 100%;
+	height: 10px;
+	border: 1px solid #dadada;
+	border-radius: 5px;
+	background-color: #fff;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+.cae-sch::after{
+	position: absolute;
+	top: -2px;
+	left: -15px;
+	content: "-";
+	font-size: 14px;
+	font-weight: 900;
+	line-height: 10px;
+}
+.cae-sch::before{
+	position: absolute;
+	top: -2px;
+	right: -18px;
+	content: "+";
+	font-size: 14px;
+	font-weight: 900;
+	line-height: 10px;
+}
+.cae-sch-btn{
+	position: absolute;
+	top: -5px;
+	left: -7px;
+	width: 18px;
+	height: 18px;
+	border: 1px solid #dadada;
+	border-radius: 50%;
+	background-color: #e6e6e6;
+	cursor: pointer;
+	transform: translate(0px,0px);
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+
