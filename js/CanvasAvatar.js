@@ -90,10 +90,6 @@ var CanvasAvatar=(function () {
         //鼠标在选中区中的位置
         ClaRangeTop = ev.pageY - $(this).offset().top;
         ClaRangeLeft = ev.pageX - $(this).offset().left;
-        // if(Rotate == -90){
-        //     ClaRangeTop = ev.pageX - $(this).offset().left;
-        //     ClaRangeLeft = ev.pageY - $(this).offset().top;
-        // }
     })
 
     //截取区域拖动效果
@@ -170,6 +166,28 @@ var CanvasAvatar=(function () {
     $(".j-turn-left").click(function () {
         Rotate -= 90;
         $(".j-cae-co").css("transform","rotate("+Rotate+"deg)");
+
+        //初始化
+        ThisWidth = $(".j-cae-mb").width();//截取区域width
+        ThisHeight = $(".j-cae-mb").height();//截取区域height
+        ParentTop = $(".j-cae-co").offset().top;//移动区域所在的top位置
+        ParentLeft = $(".j-cae-co").offset().left;//移动区域所在的left位置
+        ThisTop = 0;//截取区域top
+        ThisLeft = 0;//截取区域left
+        ParenWidth = $(".j-cae-co").width();//移动区域所在的宽度
+        ParenHeight = $(".j-cae-co").height();//移动区域所在的高度
+        ThisWidthMax = ParenWidth - ThisLeft;//截取区域的宽度最大值
+        ThisHeightMax = ParenHeight - ThisTop;//截取区域的高度最大值
+
+        //取得截取坐标
+        var x = ThisLeft / imgConWidth * imageWidth;
+        var y = ThisTop / imgConHeight * imageHeight;
+        var thewidth = imageWidth / imgConWidth * ThisWidth;
+        var theheight = imageHeight / imgConHeight * ThisHeight;
+        ctx.translate(90,90);
+        ctx.rotate(-90*Math.PI/180);
+        ctx.translate(-90,-90);
+        ctx.drawImage(image, x, y, thewidth, theheight, 0, 0, 180, 180);
     })
 
     //图片下载
