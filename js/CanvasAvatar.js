@@ -11,8 +11,8 @@ var CanvasAvatar=(function () {
     var ParentLeft;//移动区域所在的left位置
     var ParenWidth;//移动区域所在的宽度
     var ParenHeight;//移动区域所在的高度
-    var ThisTop;//截取区域top
-    var ThisLeft;//截取区域left
+    var ThisTop;//截取区域top-相对于移动区域
+    var ThisLeft;//截取区域left-相对于移动区域
     var ThisWidthMax;//截取区域的宽度最大值
     var ThisHeightMax;//截取区域的高度最大值
     var ThisWidth = $(".j-cae-mb").width()+2;//截取区域width
@@ -55,16 +55,16 @@ var CanvasAvatar=(function () {
             $(".j-cae-mb").css("transform","translate(0px,0px)");
             $(".j-cae-img-tp").css("clip","rect(0px,50px,50px,0px)");
 
-            ThisWidth = $(".j-cae-mb").width() + 2;//截取区域width
-            ThisHeight = $(".j-cae-mb").height() + 2;//截取区域height
+            ThisWidth = $(".j-cae-mb").width();//截取区域width
+            ThisHeight = $(".j-cae-mb").height();//截取区域height
             ParentTop = $(".j-cae-co").offset().top;//移动区域所在的top位置
             ParentLeft = $(".j-cae-co").offset().left;//移动区域所在的left位置
             ThisTop = 0;//截取区域top
             ThisLeft = 0;//截取区域left
             ParenWidth = $(".j-cae-co").width();//移动区域所在的宽度
             ParenHeight = $(".j-cae-co").height();//移动区域所在的高度
-            ThisWidthMax = ParentLeft + ParenWidth - ThisLeft;//截取区域的宽度最大值
-            ThisHeightMax = ParentTop + ParenHeight - ThisTop;//截取区域的高度最大值
+            ThisWidthMax = ParenWidth - ThisLeft;//截取区域的宽度最大值
+            ThisHeightMax = ParenHeight - ThisTop;//截取区域的高度最大值
             imgConWidth = $(".j-cae-img-bm").width();//缩略图宽度
             imgConHeight = $(".j-cae-img-bm").height();//缩略图高度
 
@@ -125,8 +125,8 @@ var CanvasAvatar=(function () {
         var theheight = imageHeight / imgConHeight * ThisHeight;
         ctx.drawImage(image, x, y, thewidth, theheight, 0, 0, 180, 180);
 
-        ThisWidthMax = ParentLeft + ParenWidth - ThisLeft;//截取区域的宽度最大值
-        ThisHeightMax = ParentTop + ParenHeight - ThisTop;//截取区域的高度最大值
+        ThisWidthMax = ParenWidth - ThisLeft;//截取区域的宽度最大值
+        ThisHeightMax = ParenHeight - ThisTop;//截取区域的高度最大值
     })
     $(".j-cae-mb-btn").mousedown(function () {
         ThisConHover = false;
@@ -141,6 +141,7 @@ var CanvasAvatar=(function () {
     $(".j-cae-co").mousemove(function(ev){
         var ThisWidths = ev.pageX - ParentLeft - ThisLeft;
         var ThisHeights = ev.pageY - ParentTop - ThisTop;
+        console.log(ThisLeft)
         if(ThisSizeMou && ThisSizeHover && ThisWidthMax > ThisWidths && ThisHeightMax > ThisHeights){
             ThisWidth = ThisWidths;
             ThisHeight = ThisHeights;
