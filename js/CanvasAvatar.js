@@ -56,18 +56,8 @@ var CanvasAvatar=(function () {
             $(".j-cae-mb").css("transform","translate(0px,0px)");
             $(".j-cae-img-tp").css("clip","rect(0px,50px,50px,0px)");
 
-            ThisWidth = $(".j-cae-mb").width();//截取区域width
-            ThisHeight = $(".j-cae-mb").height();//截取区域height
-            ParentTop = $(".j-cae-co").offset().top;//移动区域所在的top位置
-            ParentLeft = $(".j-cae-co").offset().left;//移动区域所在的left位置
-            ThisTop = 0;//截取区域top
-            ThisLeft = 0;//截取区域left
-            ParenWidth = $(".j-cae-co").width();//移动区域所在的宽度
-            ParenHeight = $(".j-cae-co").height();//移动区域所在的高度
-            ThisWidthMax = ParenWidth - ThisLeft;//截取区域的宽度最大值
-            ThisHeightMax = ParenHeight - ThisTop;//截取区域的高度最大值
-            imgConWidth = $(".j-cae-img-bm").width();//缩略图宽度
-            imgConHeight = $(".j-cae-img-bm").height();//缩略图高度
+            //初始化
+            init();
 
             //取得截取坐标
             var x = ThisLeft / imgConWidth * imageWidth;
@@ -97,26 +87,20 @@ var CanvasAvatar=(function () {
         var ThisBottom = 0;//截取区域距离拖动区间底部的距离
         var ThisRight = 0;//截取区域距离拖动区间右部的距离
         if(ThisConMou && ThisConHover){
-            if(Math.abs(Rotate % 360) == 0){
+            ThisBottom = ParenHeight- ThisTop - ThisHeight;//截取区域底部距离拖动区间顶部的距离
+            ThisRight = ParenWidth - ThisLeft - ThisWidth;//截取区域右部距离拖动区间左部的距离
+            if(Rotate % 360 == 0){
                 ThisTop = ev.pageY - ParentTop - ClaRangeTop;
                 ThisLeft = ev.pageX - ParentLeft - ClaRangeLeft;
-                ThisBottom = ParenHeight- ThisTop - ThisHeight;//截取区域底部距离拖动区间顶部的距离
-                ThisRight = ParenWidth - ThisLeft - ThisWidth;//截取区域右部距离拖动区间左部的距离
-            }else if(Math.abs(Rotate % 360) == 90){
+            }else if(Rotate % 360 == -90 || Rotate % 360 == 270){
                 ThisTop = ev.pageX - ParentLeft - ClaRangeLeft;
                 ThisLeft = ParenWidth- (ev.pageY - ParentTop - ClaRangeTop) - ThisHeight;
-                ThisBottom = ParenHeight- ThisTop - ThisHeight;//截取区域底部距离拖动区间顶部的距离
-                ThisRight = ParenWidth - ThisLeft - ThisWidth;//截取区域右部距离拖动区间左部的距离
-            }else if (Math.abs(Rotate % 360) == 180){
+            }else if (Rotate % 360 == -180 || Rotate % 360 == 180){
                 ThisTop = ParenHeight - (ev.pageY - ParentTop - ClaRangeTop) - ThisHeight;
                 ThisLeft = ParenWidth- (ev.pageX - ParentLeft - ClaRangeLeft) - ThisWidth;
-                ThisBottom = ParenHeight- ThisTop - ThisHeight;//截取区域底部距离拖动区间顶部的距离
-                ThisRight = ParenWidth - ThisLeft - ThisWidth;//截取区域右部距离拖动区间左部的距离
-            }else if (Math.abs(Rotate % 360) == 270){
+            }else if (Rotate % 360 == -270 || Rotate % 360 == 90){
                 ThisTop = ParenHeight - (ev.pageX - ParentLeft - ClaRangeLeft) - ThisHeight;
                 ThisLeft = ev.pageY - ParentTop - ClaRangeTop;
-                ThisBottom = ParenHeight- ThisTop - ThisHeight;//截取区域底部距离拖动区间顶部的距离
-                ThisRight = ParenWidth - ThisLeft - ThisWidth;//截取区域右部距离拖动区间左部的距离
             }
             //碰撞检测
             if(ThisTop >= 0 && ThisBottom >= 0 && ThisLeft >= 0 && ThisRight >= 0){
@@ -197,6 +181,25 @@ var CanvasAvatar=(function () {
         ctx.drawImage(image, x, y, thewidth, theheight, 0, 0, 180, 180);
     })
 
+    //向右转
+    $(".j-turn-right").click(function () {
+        Rotate += 90;
+        $(".j-cae-co").css("transform","rotate("+Rotate+"deg)");
+
+        //初始化
+        init()
+
+        //取得截取坐标
+        var x = ThisLeft / imgConWidth * imageWidth;
+        var y = ThisTop / imgConHeight * imageHeight;
+        var thewidth = imageWidth / imgConWidth * ThisWidth;
+        var theheight = imageHeight / imgConHeight * ThisHeight;
+        ctx.translate(90,90);
+        ctx.rotate(90*Math.PI/180);
+        ctx.translate(-90,-90);
+        ctx.drawImage(image, x, y, thewidth, theheight, 0, 0, 180, 180);
+    })
+
     //图片下载
     $(".j-cae-dld").click(function () {
         imgDown('png');
@@ -223,6 +226,23 @@ var CanvasAvatar=(function () {
         };
         var filename = 'img_' + (new Date()).getTime() + '.' + type;//给下载的图片命名
         saveFile(imgData,filename);
+    }
+
+
+    //初始化
+    function init() {
+        ThisWidth = $(".j-cae-mb").width();//截取区域width
+        ThisHeight = $(".j-cae-mb").height();//截取区域height
+        ParentTop = $(".j-cae-co").offset().top;//移动区域所在的top位置
+        ParentLeft = $(".j-cae-co").offset().left;//移动区域所在的left位置
+        ThisTop = 0;//截取区域top
+        ThisLeft = 0;//截取区域left
+        ParenWidth = $(".j-cae-co").width();//移动区域所在的宽度
+        ParenHeight = $(".j-cae-co").height();//移动区域所在的高度
+        ThisWidthMax = ParenWidth - ThisLeft;//截取区域的宽度最大值
+        ThisHeightMax = ParenHeight - ThisTop;//截取区域的高度最大值
+        imgConWidth = $(".j-cae-img-bm").width();//缩略图宽度
+        imgConHeight = $(".j-cae-img-bm").height();//缩略图高度
     }
 
 })();
