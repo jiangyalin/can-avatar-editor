@@ -97,20 +97,27 @@ var CanvasAvatar=(function () {
         var ThisBottom = 0;//截取区域距离拖动区间底部的距离
         var ThisRight = 0;//截取区域距离拖动区间右部的距离
         if(ThisConMou && ThisConHover){
-            ThisTop = ev.pageY - ParentTop - ClaRangeTop;
-            ThisLeft = ev.pageX - ParentLeft - ClaRangeLeft;
-            ThisBottom = ParenHeight- ThisTop - ThisHeight;//截取区域底部距离拖动区间顶部的距离
-            ThisRight = ParenWidth - ThisLeft - ThisWidth;//截取区域右部距离拖动区间左部的距离
-            if(Rotate == -90){
-                console.log("ppp")
-                ThisBottom = ParenWidth- ThisTop - ThisHeight;//截取区域底部距离拖动区间顶部的距离
-                ThisRight = ParenHeight - ThisLeft - ThisWidth;//截取区域右部距离拖动区间左部的距离
-                ThisTop = ThisLeft;
-                ThisLeft = ThisBottom;
+            if(Math.abs(Rotate % 360) == 0){
+                ThisTop = ev.pageY - ParentTop - ClaRangeTop;
+                ThisLeft = ev.pageX - ParentLeft - ClaRangeLeft;
+                ThisBottom = ParenHeight- ThisTop - ThisHeight;//截取区域底部距离拖动区间顶部的距离
+                ThisRight = ParenWidth - ThisLeft - ThisWidth;//截取区域右部距离拖动区间左部的距离
+            }else if(Math.abs(Rotate % 360) == 90){
+                ThisTop = ev.pageX - ParentLeft - ClaRangeLeft;
+                ThisLeft = ParenWidth- (ev.pageY - ParentTop - ClaRangeTop) - ThisHeight;
+                ThisBottom = ParenHeight- ThisTop - ThisHeight;//截取区域底部距离拖动区间顶部的距离
+                ThisRight = ParenWidth - ThisLeft - ThisWidth;//截取区域右部距离拖动区间左部的距离
+            }else if (Math.abs(Rotate % 360) == 180){
+                ThisTop = ParenHeight - (ev.pageY - ParentTop - ClaRangeTop) - ThisHeight;
+                ThisLeft = ParenWidth- (ev.pageX - ParentLeft - ClaRangeLeft) - ThisWidth;
+                ThisBottom = ParenHeight- ThisTop - ThisHeight;//截取区域底部距离拖动区间顶部的距离
+                ThisRight = ParenWidth - ThisLeft - ThisWidth;//截取区域右部距离拖动区间左部的距离
+            }else if (Math.abs(Rotate % 360) == 270){
+                ThisTop = ParenHeight - (ev.pageX - ParentLeft - ClaRangeLeft) - ThisHeight;
+                ThisLeft = ev.pageY - ParentTop - ClaRangeTop;
+                ThisBottom = ParenHeight- ThisTop - ThisHeight;//截取区域底部距离拖动区间顶部的距离
+                ThisRight = ParenWidth - ThisLeft - ThisWidth;//截取区域右部距离拖动区间左部的距离
             }
-            console.log("ClaRangeTop = "+ClaRangeTop)
-            console.log("ClaRangeLeft = "+ClaRangeLeft)
-            console.log("ThisTop = "+ThisTop)
             //碰撞检测
             if(ThisTop >= 0 && ThisBottom >= 0 && ThisLeft >= 0 && ThisRight >= 0){
                 $(this).css("transform","translate("+ThisLeft+"px,"+ThisTop+"px)");
