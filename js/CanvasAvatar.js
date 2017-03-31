@@ -23,6 +23,8 @@ var CanvasAvatar=(function () {
     var ThisWidth = $(".j-cae-mb").width();//截取区域width
     var ThisHeight = $(".j-cae-mb").height();//截取区域height
     var Rotate = 0;//偏离角度
+    var Scale = 1;//缩放比例
+    var ScaleMax = 5;//缩放最大倍数
     var image = new Image();//新建一个空的图片对象
     var imageWidth;//图片的原始宽度
     var imageHeight;//图片的原始高度
@@ -88,6 +90,8 @@ var CanvasAvatar=(function () {
         //鼠标在选中区中的位置
         ClaRangeTop = ev.pageY - $(this).offset().top;
         ClaRangeLeft = ev.pageX - $(this).offset().left;
+        ClaRangeTop = 25;
+        ClaRangeLeft = 25;
     })
 
     //截取区域拖动效果
@@ -165,7 +169,7 @@ var CanvasAvatar=(function () {
     //向左转
     $(".j-turn-left").click(function () {
         Rotate -= 90;
-        $(".j-cae-co").css("transform","rotate("+Rotate+"deg)");
+        $(".j-cae-co").css("transform","rotate("+Rotate+"deg) scale("+Scale+")");
 
         //初始化
         init();
@@ -184,7 +188,7 @@ var CanvasAvatar=(function () {
     //向右转
     $(".j-turn-right").click(function () {
         Rotate += 90;
-        $(".j-cae-co").css("transform","rotate("+Rotate+"deg)");
+        $(".j-cae-co").css("transform","rotate("+Rotate+"deg) scale("+Scale+")");
 
         //初始化
         init();
@@ -211,7 +215,9 @@ var CanvasAvatar=(function () {
     $(document).mousemove(function (ev) {
         SchLeft = ev.pageX - SchParentLeft - SchRangeLeft;
         if(SchMou && SchLeft < SchParentWidth && SchLeft > 0){
+            Scale = SchLeft / SchParentWidth * ScaleMax
             $(".j-cae-sch-btn").css("transform","translate("+SchLeft+"px,0px)");
+            $(".j-cae-co").css("transform","rotate("+Rotate+"deg) scale("+Scale+")");
         }
     })
 
