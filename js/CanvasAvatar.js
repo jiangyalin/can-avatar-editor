@@ -2,7 +2,6 @@ var CanvasAvatar=(function () {
 
     //声明变量
     var ThisConMou = false;//当前是否在截取区域按下状态
-    var ThisConHover = false;//当前鼠标是否在截取区域元素上状态
     var ThisSizeMou = false;//当前是否在调整大小区按下状态
     var ThisSizeHover = false;//当前是否在调整大小区素上状态
     var SchMou = false;//缩放控件是否按下状态
@@ -77,12 +76,6 @@ var CanvasAvatar=(function () {
         }
     })
 
-    //鼠标是否在截取区域上
-    $(".j-cae-mb").hover(function(){
-        ThisConHover = true;
-    },function(){
-        ThisConHover = false;
-    })
     //鼠标是否在截取区域中按下
     $(".j-cae-mb").mousedown(function(ev){
         ThisConMou = true;
@@ -136,7 +129,6 @@ var CanvasAvatar=(function () {
     //当鼠标抬起时截取图片
     $(document).mouseup(function(){
         ThisConMou = false;
-        ThisConHover = true;
         ThisSizeMou = false;
         SchMou = false;
 
@@ -157,7 +149,6 @@ var CanvasAvatar=(function () {
         ThisHeightMax = ParenHeight - ThisTop;//截取区域的高度最大值
     })
     $(".j-cae-mb-btn").mousedown(function () {
-        ThisConHover = false;
         ThisSizeMou = true;
     })
     $(".j-cae-co").hover(function () {
@@ -225,7 +216,7 @@ var CanvasAvatar=(function () {
     //进度条
     $(document).mousemove(function (ev) {
         SchLeft = ev.pageX - SchParentLeft - SchRangeLeft;
-        if(SchMou && SchLeft < SchParentWidth && SchLeft > 0){
+        if(SchMou && SchLeft <= SchParentWidth && SchLeft >= 0){
             Scale = SchLeft / SchParentWidth;
             ThisWidth = ThisWidthMax * Scale;
             ThisHeight = ThisWidthMax * Scale;
