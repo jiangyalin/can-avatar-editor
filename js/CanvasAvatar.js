@@ -44,7 +44,7 @@ var CanvasAvatar=(function () {
                 imageHeight = image.height;//图片的原始高度
 
                 //激活功能
-                $(".j-cae-fl").addClass("cae-active");
+                $(".j-cae-flr").addClass("cae-active");
                 $(".j-cae").find("[caeActive='false']").attr("caeActive","true");
 
                 //图像居中

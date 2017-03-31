@@ -178,5 +178,26 @@
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
+.cae-rte{
+	display: none;
+}
+.cae-ch{
+	display: none;
+}
+.cae-dld{
+	/*display: none;*/
+}
+.cae-active .cae-tt{
+	display: none;
+}
+.cae-active .cae-rte{
+	display: block;
+}
+.cae-active .cae-ch{
+	display: block;
+}
+.cae-active .cae-dld{
+	display: block;
+}
 
 
