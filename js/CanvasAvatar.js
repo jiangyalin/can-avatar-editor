@@ -77,7 +77,11 @@ var CanvasAvatar=(function () {
                 }
 
                 //进度条初始值
-                SchLeft = (ThisMax / SchParentWidth) * ThisWidth;
+                SchLeft = (SchParentWidth / ThisMax) * ThisWidth;
+                // console.log("ThisMax = "+ThisMax);
+                // console.log("SchParentWidth = "+SchParentWidth);
+                // console.log("ThisWidth = "+ThisWidth);
+                // console.log("SchLeft = "+SchLeft);
                 $(".j-cae-sch-btn").css("transform","translate("+SchLeft+"px,0px)");
 
                 //取得截取坐标
@@ -215,6 +219,15 @@ var CanvasAvatar=(function () {
             Scale = SchLeft / SchParentWidth;
             ThisWidth = ThisMax * Scale;
             ThisHeight = ThisMax * Scale;
+            console.log("ThisWidth = "+ThisWidth)
+            console.log("(ThisMax - ThisLeft) = "+(ThisMax - ThisLeft))
+            if(ThisWidth > (ThisMax - ThisLeft)){
+                ThisLeft = ThisMax - ThisWidth;
+            }
+            if(ThisHeight > (ThisMax - ThisTop)){
+                ThisTop = ThisMax - ThisHeight;
+            }
+            $(".j-cae-mb").css("transform","translate("+ThisLeft+"px,"+ThisTop+"px)");
             $(".j-cae-mb").width(ThisWidth);
             $(".j-cae-mb").height(ThisHeight);
             $(".j-cae-img-tp").css("clip","rect("+ThisTop+"px,"+(ThisLeft + ThisWidth)+"px,"+(ThisTop + ThisHeight)+"px,"+ThisLeft+"px)");
