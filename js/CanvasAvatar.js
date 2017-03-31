@@ -24,7 +24,6 @@ var CanvasAvatar=(function () {
     var ThisHeight = $(".j-cae-mb").height();//截取区域height
     var Rotate = 0;//偏离角度
     var Scale = 1;//缩放比例
-    var ScaleMax = 5;//缩放最大倍数
     var image = new Image();//新建一个空的图片对象
     var imageWidth;//图片的原始宽度
     var imageHeight;//图片的原始高度
@@ -90,15 +89,13 @@ var CanvasAvatar=(function () {
         //鼠标在选中区中的位置
         ClaRangeTop = ev.pageY - $(this).offset().top;
         ClaRangeLeft = ev.pageX - $(this).offset().left;
-        ClaRangeTop = 25;
-        ClaRangeLeft = 25;
     })
 
     //截取区域拖动效果
     $(".j-cae-mb").mousemove(function(ev){
         var ThisBottom = 0;//截取区域距离拖动区间底部的距离
         var ThisRight = 0;//截取区域距离拖动区间右部的距离
-        if(ThisConMou && ThisConHover){
+        if(ThisConMou){
             ThisBottom = ParenHeight- ThisTop - ThisHeight;//截取区域底部距离拖动区间顶部的距离
             ThisRight = ParenWidth - ThisLeft - ThisWidth;//截取区域右部距离拖动区间左部的距离
             if(Rotate % 360 == 0){
@@ -114,8 +111,22 @@ var CanvasAvatar=(function () {
                 ThisTop = ParenHeight - (ev.pageX - ParentLeft - ClaRangeLeft) - ThisHeight;
                 ThisLeft = ev.pageY - ParentTop - ClaRangeTop;
             }
+            if(ThisTop <= 0){
+                ThisTop = 0;
+            }
+            if(ThisLeft <= 0){
+                ThisLeft = 0;
+            }
+            if(ThisRight < 0){
+                ThisLeft = ParenWidth - ThisWidth;
+            }
+            if(ThisBottom < 0){
+                ThisTop = ParenHeight - ThisHeight;
+            }
+            var ThisLeftMax = ParenWidth - ThisWidth;
+            var ThisTopMax = ParenHeight - ThisHeight;
             //碰撞检测
-            if(ThisTop >= 0 && ThisBottom >= 0 && ThisLeft >= 0 && ThisRight >= 0){
+            if(ThisTop >= 0 && ThisLeft >= 0 && ThisTop <= ThisTopMax && ThisLeft <= ThisLeftMax){
                 $(this).css("transform","translate("+ThisLeft+"px,"+ThisTop+"px)");
                 $(".j-cae-img-tp").css("clip","rect("+ThisTop+"px,"+(ThisLeft + ThisWidth)+"px,"+(ThisTop + ThisHeight)+"px,"+ThisLeft+"px)");
             }
@@ -215,9 +226,12 @@ var CanvasAvatar=(function () {
     $(document).mousemove(function (ev) {
         SchLeft = ev.pageX - SchParentLeft - SchRangeLeft;
         if(SchMou && SchLeft < SchParentWidth && SchLeft > 0){
-            Scale = SchLeft / SchParentWidth * ScaleMax
+            Scale = SchLeft / SchParentWidth;
+            ThisWidth = ThisWidthMax * Scale;
+            ThisHeight = ThisWidthMax * Scale;
+            $(".j-cae-mb").width(ThisWidth);
+            $(".j-cae-mb").height(ThisHeight);
             $(".j-cae-sch-btn").css("transform","translate("+SchLeft+"px,0px)");
-            $(".j-cae-co").css("transform","rotate("+Rotate+"deg) scale("+Scale+")");
         }
     })
 
