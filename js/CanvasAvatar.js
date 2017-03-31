@@ -18,8 +18,8 @@ var CanvasAvatar=(function () {
     var ThisWidthMax;//截取区域的宽度最大值(暂不支持非正方形)
     var ThisHeightMax;//截取区域的高度最大值(暂不支持非正方形)
     var ThisMax = 0;//截取区域的长宽最大值
-    var ThisWidth = 60;//截取区域width
-    var ThisHeight = 60;//截取区域height
+    var ThisWidth = 50;//截取区域width
+    var ThisHeight = 50;//截取区域height
     var Rotate = 0;//偏离角度
     var Scale = 1;//缩放比例
     var image = new Image();//新建一个空的图片对象
@@ -78,10 +78,6 @@ var CanvasAvatar=(function () {
 
                 //进度条初始值
                 SchLeft = (SchParentWidth / ThisMax) * ThisWidth;
-                // console.log("ThisMax = "+ThisMax);
-                // console.log("SchParentWidth = "+SchParentWidth);
-                // console.log("ThisWidth = "+ThisWidth);
-                // console.log("SchLeft = "+SchLeft);
                 $(".j-cae-sch-btn").css("transform","translate("+SchLeft+"px,0px)");
 
                 //取得截取坐标
@@ -219,8 +215,6 @@ var CanvasAvatar=(function () {
             Scale = SchLeft / SchParentWidth;
             ThisWidth = ThisMax * Scale;
             ThisHeight = ThisMax * Scale;
-            console.log("ThisWidth = "+ThisWidth)
-            console.log("(ThisMax - ThisLeft) = "+(ThisMax - ThisLeft))
             if(ThisWidth > (ThisMax - ThisLeft)){
                 ThisLeft = ThisMax - ThisWidth;
             }
@@ -280,6 +274,8 @@ var CanvasAvatar=(function () {
         ThisHeightMax = ParenHeight - ThisTop;//截取区域的高度最大值
         imgConWidth = $(".j-cae-img-bm").width();//缩略图宽度
         imgConHeight = $(".j-cae-img-bm").height();//缩略图高度
+        SchParentWidth = $(".j-cae-sch").width();//缩放进度条宽度
+        SchParentLeft = $(".j-cae-sch").offset().left;//缩放进度条的left位置
     }
 
 })();
