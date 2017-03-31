@@ -13,8 +13,8 @@ var CanvasAvatar=(function () {
     var ParenWidth;//移动区域所在的宽度
     var ParenHeight;//移动区域所在的高度
     var ThisConMou = false;//当前是否在截取区域按下状态
-    var ThisTop;//截取区域top-相对于移动区域
-    var ThisLeft;//截取区域left-相对于移动区域
+    var ThisTop = 0;//截取区域top-相对于移动区域
+    var ThisLeft = 0;//截取区域left-相对于移动区域
     var ThisWidthMax;//截取区域的宽度最大值(暂不支持非正方形)
     var ThisHeightMax;//截取区域的高度最大值(暂不支持非正方形)
     var ThisMax = 0;//截取区域的长宽最大值
@@ -274,8 +274,6 @@ var CanvasAvatar=(function () {
         ThisHeight = $(".j-cae-mb").height();//截取区域height
         ParentTop = $(".j-cae-co").offset().top;//移动区域所在的top位置
         ParentLeft = $(".j-cae-co").offset().left;//移动区域所在的left位置
-        ThisTop = 0;//截取区域top
-        ThisLeft = 0;//截取区域left
         ParenWidth = $(".j-cae-co").width();//移动区域所在的宽度
         ParenHeight = $(".j-cae-co").height();//移动区域所在的高度
         ThisWidthMax = ParenWidth - ThisLeft;//截取区域的宽度最大值
