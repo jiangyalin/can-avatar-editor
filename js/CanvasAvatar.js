@@ -2,8 +2,6 @@ var CanvasAvatar=(function () {
 
     //声明变量
     var ThisConMou = false;//当前是否在截取区域按下状态
-    var ThisSizeMou = false;//当前是否在调整大小区按下状态
-    var ThisSizeHover = false;//当前是否在调整大小区素上状态
     var SchMou = false;//缩放控件是否按下状态
     var ClaRangeTop = 0;//鼠标在截取区域元素中的top位置
     var ClaRangeLeft = 0;//鼠标在截取区域元素中的left位置
@@ -129,7 +127,6 @@ var CanvasAvatar=(function () {
     //当鼠标抬起时截取图片
     $(document).mouseup(function(){
         ThisConMou = false;
-        ThisSizeMou = false;
         SchMou = false;
 
         //截取图片
@@ -147,25 +144,6 @@ var CanvasAvatar=(function () {
 
         ThisWidthMax = ParenWidth - ThisLeft;//截取区域的宽度最大值
         ThisHeightMax = ParenHeight - ThisTop;//截取区域的高度最大值
-    })
-    $(".j-cae-mb-btn").mousedown(function () {
-        ThisSizeMou = true;
-    })
-    $(".j-cae-co").hover(function () {
-        ThisSizeHover = true;
-    },function () {
-        ThisSizeHover = false;
-    })
-    //改变截取区域大小
-    $(".j-cae-co").mousemove(function(ev){
-        var ThisWidths = ev.pageX - ParentLeft - ThisLeft;
-        var ThisHeights = ev.pageY - ParentTop - ThisTop;
-        if(ThisSizeMou && ThisSizeHover && ThisWidthMax > ThisWidths && ThisHeightMax > ThisHeights){
-            ThisWidth = ThisWidths;
-            ThisHeight = ThisHeights;
-            $(".j-cae-mb").width(ThisWidth).height(ThisHeight);
-            $(".j-cae-img-tp").css("clip","rect("+ThisTop+"px,"+(ThisLeft + ThisWidth)+"px,"+(ThisTop + ThisHeight)+"px,"+ThisLeft+"px)");
-        }
     })
     
     //向左转
