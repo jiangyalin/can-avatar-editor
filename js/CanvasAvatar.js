@@ -149,7 +149,7 @@ var CanvasAvatar=(function () {
     //向左转
     $(".j-turn-left").click(function () {
         Rotate -= 90;
-        $(".j-cae-co").css("transform","rotate("+Rotate+"deg) scale("+Scale+")");
+        $(".j-cae-co").css("transform","rotate("+Rotate+"deg)");
 
         //初始化
         init();
@@ -168,7 +168,7 @@ var CanvasAvatar=(function () {
     //向右转
     $(".j-turn-right").click(function () {
         Rotate += 90;
-        $(".j-cae-co").css("transform","rotate("+Rotate+"deg) scale("+Scale+")");
+        $(".j-cae-co").css("transform","rotate("+Rotate+"deg)");
 
         //初始化
         init();
@@ -194,12 +194,14 @@ var CanvasAvatar=(function () {
     //进度条
     $(document).mousemove(function (ev) {
         SchLeft = ev.pageX - SchParentLeft - SchRangeLeft;
+        //更改截取区域大小
         if(SchMou && SchLeft <= SchParentWidth && SchLeft >= 0){
             Scale = SchLeft / SchParentWidth;
             ThisWidth = ThisWidthMax * Scale;
             ThisHeight = ThisWidthMax * Scale;
             $(".j-cae-mb").width(ThisWidth);
             $(".j-cae-mb").height(ThisHeight);
+            $(".j-cae-img-tp").css("clip","rect("+ThisTop+"px,"+(ThisLeft + ThisWidth)+"px,"+(ThisTop + ThisHeight)+"px,"+ThisLeft+"px)");
             $(".j-cae-sch-btn").css("transform","translate("+SchLeft+"px,0px)");
         }
     })
