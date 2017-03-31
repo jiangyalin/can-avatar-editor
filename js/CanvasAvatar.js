@@ -1,7 +1,6 @@
 var CanvasAvatar=(function () {
 
     //声明变量
-    var ThisConMou = false;//当前是否在截取区域按下状态
     var SchMou = false;//缩放控件是否按下状态
     var ClaRangeTop = 0;//鼠标在截取区域元素中的top位置
     var ClaRangeLeft = 0;//鼠标在截取区域元素中的left位置
@@ -13,12 +12,14 @@ var CanvasAvatar=(function () {
     var ParentLeft;//移动区域所在的left位置
     var ParenWidth;//移动区域所在的宽度
     var ParenHeight;//移动区域所在的高度
+    var ThisConMou = false;//当前是否在截取区域按下状态
     var ThisTop;//截取区域top-相对于移动区域
     var ThisLeft;//截取区域left-相对于移动区域
-    var ThisWidthMax;//截取区域的宽度最大值
-    var ThisHeightMax;//截取区域的高度最大值
-    var ThisWidth = $(".j-cae-mb").width();//截取区域width
-    var ThisHeight = $(".j-cae-mb").height();//截取区域height
+    var ThisWidthMax;//截取区域的宽度最大值(暂不支持非正方形)
+    var ThisHeightMax;//截取区域的高度最大值(暂不支持非正方形)
+    var ThisMax = 0;//截取区域的长宽最大值
+    var ThisWidth = 60;//截取区域width
+    var ThisHeight = 60;//截取区域height
     var Rotate = 0;//偏离角度
     var Scale = 1;//缩放比例
     var image = new Image();//新建一个空的图片对象
@@ -44,6 +45,7 @@ var CanvasAvatar=(function () {
 
                 //激活功能
                 $(".j-cae-fl").addClass("cae-active");
+                $(".j-cae").find("[caeActive='false']").attr("caeActive","true");
 
                 //图像居中
                 $(".j-cae-co").css({"width":"100%","height":"100%","top":"0","left":"0"});
@@ -57,12 +59,26 @@ var CanvasAvatar=(function () {
                     .css({"top":($(".j-cae-mnc").height()-$(".j-cae-co").height())/2+"px","left":($(".j-cae-mnc").width()-$(".j-cae-co").width())/2+"px"});
                 $(".j-cae-mnc").css({"border-radius":"0px"});
 
+                //截取区域初始化
+                $(".j-cae-mb").width(ThisWidth);
+                $(".j-cae-mb").height(ThisHeight);
+
+                //数据初始化
+                init();
+
                 //重置剪切区域位置
                 $(".j-cae-mb").css("transform","translate(0px,0px)");
-                $(".j-cae-img-tp").css("clip","rect(0px,50px,50px,0px)");
+                $(".j-cae-img-tp").css("clip","rect(0px,"+ThisWidth+"px,"+ThisHeight+"px,0px)");
 
-                //初始化
-                init();
+                if(ThisWidthMax > ThisHeightMax){
+                    ThisMax = ThisHeightMax;
+                }else{
+                    ThisMax = ThisWidthMax;
+                }
+
+                //进度条初始值
+                SchLeft = (ThisMax / SchParentWidth) * ThisWidth;
+                $(".j-cae-sch-btn").css("transform","translate("+SchLeft+"px,0px)");
 
                 //取得截取坐标
                 var x = ThisLeft / imgConWidth * imageWidth;
@@ -147,11 +163,11 @@ var CanvasAvatar=(function () {
     })
     
     //向左转
-    $(".j-turn-left").click(function () {
+    $(".j-cae").on("click",".j-turn-left[caeActive='true']",function () {
         Rotate -= 90;
         $(".j-cae-co").css("transform","rotate("+Rotate+"deg)");
 
-        //初始化
+        //数据初始化
         init();
 
         //取得截取坐标
@@ -166,11 +182,11 @@ var CanvasAvatar=(function () {
     })
 
     //向右转
-    $(".j-turn-right").click(function () {
+    $(".j-cae").on("click",".j-turn-right[caeActive='true']",function () {
         Rotate += 90;
         $(".j-cae-co").css("transform","rotate("+Rotate+"deg)");
 
-        //初始化
+        //数据初始化
         init();
 
         //取得截取坐标
@@ -185,7 +201,7 @@ var CanvasAvatar=(function () {
     })
 
     //缩放
-    $(".j-cae-sch-btn").mousedown(function(ev){
+    $(".j-cae").on("mousedown",".j-cae-sch-btn[caeActive='true']",function(ev){
         SchMou = true;
         //鼠标在选中区中的位置
         SchRangeLeft = ev.pageX - $(this).offset().left;
@@ -197,8 +213,8 @@ var CanvasAvatar=(function () {
         //更改截取区域大小
         if(SchMou && SchLeft <= SchParentWidth && SchLeft >= 0){
             Scale = SchLeft / SchParentWidth;
-            ThisWidth = ThisWidthMax * Scale;
-            ThisHeight = ThisWidthMax * Scale;
+            ThisWidth = ThisMax * Scale;
+            ThisHeight = ThisMax * Scale;
             $(".j-cae-mb").width(ThisWidth);
             $(".j-cae-mb").height(ThisHeight);
             $(".j-cae-img-tp").css("clip","rect("+ThisTop+"px,"+(ThisLeft + ThisWidth)+"px,"+(ThisTop + ThisHeight)+"px,"+ThisLeft+"px)");
@@ -207,12 +223,12 @@ var CanvasAvatar=(function () {
     })
 
     //图片下载
-    $(".j-cae-dld").click(function () {
+    $(".j-cae").on("click",".j-cae-dld[caeActive='true']",function () {
         imgDown('png');
     })
     
     $(window).resize(function () {
-        //初始化
+        //数据初始化
         init();
     })
 
@@ -239,7 +255,7 @@ var CanvasAvatar=(function () {
         saveFile(imgData,filename);
     }
 
-    //初始化
+    //数据初始化
     function init() {
         ThisWidth = $(".j-cae-mb").width();//截取区域width
         ThisHeight = $(".j-cae-mb").height();//截取区域height
