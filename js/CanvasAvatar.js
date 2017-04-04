@@ -32,8 +32,8 @@ var CanvasAvatar=(function () {
 
     //截取区域位置设置
     var RemovalPositionSet = function (top,left,width,height,topMax,leftMax) {
-        topMax = topMax || 0;
-        leftMax = leftMax || 0;
+        topMax = topMax || 180;
+        leftMax = leftMax || 180;
         if(top >= 0 && left >= 0 && top <= topMax && left <= leftMax){//碰撞检测
             $(".j-cae-mb").css("transform","translate("+left+"px,"+top+"px)");
             $(".j-cae-img-tp").css("clip","rect("+top+"px,"+(left + width)+"px,"+(top + height)+"px,"+left+"px)");
@@ -78,6 +78,45 @@ var CanvasAvatar=(function () {
     //方向旋转
     var RotateDirection = function (angle) {
         $(".j-cae-co").css("transform","rotate("+angle+"deg)");
+    }
+
+    //图片下载功能
+    var ImageDown = function (type) {
+        var imgData = canvas.toDataURL(type);//得到截取区域的data64位编码
+        var _fixType = function(type) {
+            type = type.toLowerCase().replace(/jpg/i, 'jpeg');
+            var r = type.match(/png|jpeg|bmp|gif/)[0];
+            return 'image/' + r;
+        };
+        imgData = imgData.replace(_fixType(type),'image/octet-stream');//替换图片类型
+        var saveFile = function(data, filename){
+            var save_link = document.createElementNS('http://www.w3.org/1999/xhtml', 'a');
+            save_link.href = data;
+            save_link.download = filename;
+            //实例化事件对象
+            var event = document.createEvent('MouseEvents');
+            event.initEvent('click', true, true);
+            //触发点击事件
+            save_link.dispatchEvent(event);
+        };
+        var filename = 'img_' + (new Date()).getTime() + '.' + type;//给下载的图片命名
+        saveFile(imgData,filename);
+    }
+
+    //数据初始化
+    var InitData = function () {
+        ThisWidth = $(".j-cae-mb").width();//截取区域width
+        ThisHeight = $(".j-cae-mb").height();//截取区域height
+        ParentTop = $(".j-cae-co").offset().top;//移动区域所在的top位置
+        ParentLeft = $(".j-cae-co").offset().left;//移动区域所在的left位置
+        ParenWidth = $(".j-cae-co").width();//移动区域所在的宽度
+        ParenHeight = $(".j-cae-co").height();//移动区域所在的高度
+        ThisWidthMax = ParenWidth - ThisLeft;//截取区域的宽度最大值
+        ThisHeightMax = ParenHeight - ThisTop;//截取区域的高度最大值
+        imgConWidth = $(".j-cae-img-bm").width();//缩略图宽度
+        imgConHeight = $(".j-cae-img-bm").height();//缩略图高度
+        SchParentWidth = $(".j-cae-sch").width();//缩放进度条宽度
+        SchParentLeft = $(".j-cae-sch").offset().left;//缩放进度条的left位置
     }
 
     //选择图片
@@ -170,7 +209,7 @@ var CanvasAvatar=(function () {
             }
             var ThisLeftMax = ParenWidth - ThisWidth;
             var ThisTopMax = ParenHeight - ThisHeight;
-            //截取区域移动
+            //截取区域位置设置
             RemovalPositionSet(ThisTop,ThisLeft,ThisWidth,ThisHeight,ThisTopMax,ThisLeftMax);
         }
     })
@@ -259,62 +298,24 @@ var CanvasAvatar=(function () {
             if(ThisHeight > (ThisMax - ThisTop)){
                 ThisTop = ThisMax - ThisHeight;
             }
-            $(".j-cae-mb").css("transform","translate("+ThisLeft+"px,"+ThisTop+"px)");
-            $(".j-cae-mb").width(ThisWidth);
-            $(".j-cae-mb").height(ThisHeight);
-            $(".j-cae-img-tp").css("clip","rect("+ThisTop+"px,"+(ThisLeft + ThisWidth)+"px,"+(ThisTop + ThisHeight)+"px,"+ThisLeft+"px)");
-            $(".j-cae-sch-btn").css("transform","translate("+SchLeft+"px,0px)");
+            //截取区域位置设置
+            RemovalPositionSet(ThisTop,ThisLeft,ThisWidth,ThisHeight);
+            //截取区域大小设置
+            RemovalSizeSet(ThisWidth,ThisHeight);
+            //进度条位置设置
+            RippleScrollBarPositionSet(SchLeft);
         }
     })
 
     //图片下载
     $(".j-cae").on("click",".j-cae-dld[caeActive='true']",function () {
-        imgDown('png');
+        ImageDown('png');
     })
     
     $(window).resize(function () {
         //数据初始化
         InitData();
     })
-
-    //图片下载功能
-    function imgDown(type) {
-        var imgData = canvas.toDataURL(type);//得到截取区域的data64位编码
-        var _fixType = function(type) {
-            type = type.toLowerCase().replace(/jpg/i, 'jpeg');
-            var r = type.match(/png|jpeg|bmp|gif/)[0];
-            return 'image/' + r;
-        };
-        imgData = imgData.replace(_fixType(type),'image/octet-stream');//替换图片类型
-        var saveFile = function(data, filename){
-            var save_link = document.createElementNS('http://www.w3.org/1999/xhtml', 'a');
-            save_link.href = data;
-            save_link.download = filename;
-            //实例化事件对象
-            var event = document.createEvent('MouseEvents');
-            event.initEvent('click', true, true);
-            //触发点击事件
-            save_link.dispatchEvent(event);
-        };
-        var filename = 'img_' + (new Date()).getTime() + '.' + type;//给下载的图片命名
-        saveFile(imgData,filename);
-    }
-
-    //数据初始化
-    var InitData = function () {
-        ThisWidth = $(".j-cae-mb").width();//截取区域width
-        ThisHeight = $(".j-cae-mb").height();//截取区域height
-        ParentTop = $(".j-cae-co").offset().top;//移动区域所在的top位置
-        ParentLeft = $(".j-cae-co").offset().left;//移动区域所在的left位置
-        ParenWidth = $(".j-cae-co").width();//移动区域所在的宽度
-        ParenHeight = $(".j-cae-co").height();//移动区域所在的高度
-        ThisWidthMax = ParenWidth - ThisLeft;//截取区域的宽度最大值
-        ThisHeightMax = ParenHeight - ThisTop;//截取区域的高度最大值
-        imgConWidth = $(".j-cae-img-bm").width();//缩略图宽度
-        imgConHeight = $(".j-cae-img-bm").height();//缩略图高度
-        SchParentWidth = $(".j-cae-sch").width();//缩放进度条宽度
-        SchParentLeft = $(".j-cae-sch").offset().left;//缩放进度条的left位置
-    }
 
 })();
 
