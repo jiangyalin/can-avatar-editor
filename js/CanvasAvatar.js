@@ -30,6 +30,56 @@ var CanvasAvatar=(function () {
     var canvas = document.getElementById("cae-canvas");//得到canvas对象
     var ctx=canvas.getContext("2d");
 
+    //截取区域位置设置
+    var RemovalPositionSet = function (top,left,width,height,topMax,leftMax) {
+        topMax = topMax || 0;
+        leftMax = leftMax || 0;
+        if(top >= 0 && left >= 0 && top <= topMax && left <= leftMax){//碰撞检测
+            $(".j-cae-mb").css("transform","translate("+left+"px,"+top+"px)");
+            $(".j-cae-img-tp").css("clip","rect("+top+"px,"+(left + width)+"px,"+(top + height)+"px,"+left+"px)");
+        }
+    }
+
+    //截取区域大小设置
+    var RemovalSizeSet = function (width,height) {
+        $(".j-cae-mb").width(width);
+        $(".j-cae-mb").height(height);
+    }
+
+    //进度条位置设置
+    var RippleScrollBarPositionSet = function (left) {
+        $(".j-cae-sch-btn").css("transform","translate("+left+"px,0px)");
+    }
+
+    //激活与关闭按钮
+    var Switch = function (status) {
+        if(status){
+            $(".j-cae-flr").addClass("cae-active");
+            $(".j-cae").find("[caeActive='false']").attr("caeActive","true");
+        }else{
+            $(".j-cae-flr").removeClass("cae-active");
+            $(".j-cae").find("[caeActive='true']").attr("caeActive","false");
+        }
+    }
+
+    //初始化图片
+    var InitImage = function (width,height,url) {
+        $(".j-cae-co").css({"width":"100%","height":"100%","top":"0","left":"0"});
+        if(width < height){
+            $(".j-cae-img").addClass("cae-img-he").removeClass("cae-img-wi");
+        }else{
+            $(".j-cae-img").addClass("cae-img-wi").removeClass("cae-img-he");
+        }
+        $(".j-cae-img").attr("src",url);
+        $(".j-cae-co").width($(".j-cae-img-bm").width()).height($(".j-cae-img-bm").height())
+            .css({"top":($(".j-cae-mnc").height()-$(".j-cae-co").height())/2+"px","left":($(".j-cae-mnc").width()-$(".j-cae-co").width())/2+"px"});
+    }
+
+    //方向旋转
+    var RotateDirection = function (angle) {
+        $(".j-cae-co").css("transform","rotate("+angle+"deg)");
+    }
+
     //选择图片
     $("#cae-fle").change(function(){
         var file = this.files[0];//得到文件
@@ -44,31 +94,19 @@ var CanvasAvatar=(function () {
                 imageHeight = image.height;//图片的原始高度
 
                 //激活功能
-                $(".j-cae-flr").addClass("cae-active");
-                $(".j-cae").find("[caeActive='false']").attr("caeActive","true");
+                Switch(true);
 
-                //图像居中
-                $(".j-cae-co").css({"width":"100%","height":"100%","top":"0","left":"0"});
-                if(imageWidth < imageHeight){
-                    $(".j-cae-img").addClass("cae-img-he").removeClass("cae-img-wi");
-                }else{
-                    $(".j-cae-img").addClass("cae-img-wi").removeClass("cae-img-he");
-                }
-                $(".j-cae-img").attr("src",image.src);
-                $(".j-cae-co").width($(".j-cae-img-bm").width()).height($(".j-cae-img-bm").height())
-                    .css({"top":($(".j-cae-mnc").height()-$(".j-cae-co").height())/2+"px","left":($(".j-cae-mnc").width()-$(".j-cae-co").width())/2+"px"});
-                $(".j-cae-mnc").css({"border-radius":"0px"});
+                //初始化图片
+                InitImage(imageWidth,imageHeight,image.src);
 
-                //截取区域初始化
-                $(".j-cae-mb").width(ThisWidth);
-                $(".j-cae-mb").height(ThisHeight);
+                //截取区域大小初始化
+                RemovalSizeSet(50,50);
 
                 //数据初始化
-                init();
+                InitData();
 
-                //重置剪切区域位置
-                $(".j-cae-mb").css("transform","translate(0px,0px)");
-                $(".j-cae-img-tp").css("clip","rect(0px,"+ThisWidth+"px,"+ThisHeight+"px,0px)");
+                //重置截取区域位置
+                RemovalPositionSet(0,0,ThisWidth,ThisHeight);
 
                 if(ThisWidthMax > ThisHeightMax){
                     ThisMax = ThisHeightMax;
@@ -76,9 +114,9 @@ var CanvasAvatar=(function () {
                     ThisMax = ThisWidthMax;
                 }
 
-                //进度条初始值
+                //进度条位置初始化
                 SchLeft = (SchParentWidth / ThisMax) * ThisWidth;
-                $(".j-cae-sch-btn").css("transform","translate("+SchLeft+"px,0px)");
+                RippleScrollBarPositionSet(SchLeft);
 
                 //取得截取坐标
                 var x = ThisLeft / imgConWidth * imageWidth;
@@ -132,11 +170,8 @@ var CanvasAvatar=(function () {
             }
             var ThisLeftMax = ParenWidth - ThisWidth;
             var ThisTopMax = ParenHeight - ThisHeight;
-            //碰撞检测
-            if(ThisTop >= 0 && ThisLeft >= 0 && ThisTop <= ThisTopMax && ThisLeft <= ThisLeftMax){
-                $(this).css("transform","translate("+ThisLeft+"px,"+ThisTop+"px)");
-                $(".j-cae-img-tp").css("clip","rect("+ThisTop+"px,"+(ThisLeft + ThisWidth)+"px,"+(ThisTop + ThisHeight)+"px,"+ThisLeft+"px)");
-            }
+            //截取区域移动
+            RemovalPositionSet(ThisTop,ThisLeft,ThisWidth,ThisHeight,ThisTopMax,ThisLeftMax);
         }
     })
 
@@ -165,10 +200,12 @@ var CanvasAvatar=(function () {
     //向左转
     $(".j-cae").on("click",".j-turn-left[caeActive='true']",function () {
         Rotate -= 90;
-        $(".j-cae-co").css("transform","rotate("+Rotate+"deg)");
+
+        //旋转
+        RotateDirection(Rotate);
 
         //数据初始化
-        init();
+        InitData();
 
         //取得截取坐标
         var x = ThisLeft / imgConWidth * imageWidth;
@@ -184,10 +221,11 @@ var CanvasAvatar=(function () {
     //向右转
     $(".j-cae").on("click",".j-turn-right[caeActive='true']",function () {
         Rotate += 90;
-        $(".j-cae-co").css("transform","rotate("+Rotate+"deg)");
+        //旋转
+        RotateDirection(Rotate);
 
         //数据初始化
-        init();
+        InitData();
 
         //取得截取坐标
         var x = ThisLeft / imgConWidth * imageWidth;
@@ -236,7 +274,7 @@ var CanvasAvatar=(function () {
     
     $(window).resize(function () {
         //数据初始化
-        init();
+        InitData();
     })
 
     //图片下载功能
@@ -263,7 +301,7 @@ var CanvasAvatar=(function () {
     }
 
     //数据初始化
-    function init() {
+    var InitData = function () {
         ThisWidth = $(".j-cae-mb").width();//截取区域width
         ThisHeight = $(".j-cae-mb").height();//截取区域height
         ParentTop = $(".j-cae-co").offset().top;//移动区域所在的top位置
@@ -281,3 +319,52 @@ var CanvasAvatar=(function () {
 })();
 
 CanvasAvatar;
+
+// var promisifiedOldGUM = function(constraints) {
+//
+//     // 第一个拿到getUserMedia，如果存在
+//     var getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia);
+//
+//     // 有些浏览器只是不实现它-返回一个不被拒绝的承诺与一个错误保持一致的接口
+//     if (!getUserMedia) {
+//         return Promise.reject(new Error('getUserMedia is not implemented in this browser-getUserMedia是不是在这个浏览器实现'));
+//     }
+//
+//     // 否则，调用包在一个旧navigator.getusermedia承诺
+//     return new Promise(function(resolve, reject) {
+//         getUserMedia.call(navigator, constraints, resolve, reject);
+//     });
+//
+// }
+//
+// // 旧的浏览器可能无法实现mediadevices可言，所以我们设置一个空的对象第一
+// if (navigator.mediaDevices === undefined) {
+//     navigator.mediaDevices = {};
+// }
+//
+// // 一些浏览器部分实现mediadevices。我们不能只指定一个对象
+// // 随着它将覆盖现有的性能getUserMedia。.
+// // 在这里，我们就要错过添加getUserMedia财产。.
+// if (navigator.mediaDevices.getUserMedia === undefined) {
+//     navigator.mediaDevices.getUserMedia = promisifiedOldGUM;
+// }
+//
+// // Prefer camera resolution nearest to 1280x720.
+// var constraints = {
+//     audio: false,
+//     video: {
+//         width: 720,
+//         height: 720
+//     }
+// };
+//
+// navigator.mediaDevices.getUserMedia(constraints)
+//     .then(function(stream) {
+//         var video = document.querySelector('video');
+//         video.src = window.URL.createObjectURL(stream);
+//         video.onloadedmetadata = function(e) {
+//             video.play();
+//         };
+//     }).catch(function(err) {
+//     console.log(err.name + ": " + err.message);
+// });

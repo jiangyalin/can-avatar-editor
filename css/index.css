@@ -28,6 +28,14 @@
 	border: 1px solid #DDDDDD;
 	background-color: #666;
 }
+.cae-vo{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+}
 .cae-co{
 	position: relative;
 	top: 0px;
