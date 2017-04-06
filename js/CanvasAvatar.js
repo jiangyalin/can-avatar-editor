@@ -12,6 +12,8 @@ var CanvasAvatar=(function () {
     var ParentLeft;//移动区域所在的left位置
     var ParenWidth;//移动区域所在的宽度
     var ParenHeight;//移动区域所在的高度
+    var CanvasWidth = 0;//画布的宽度
+    var CanvasHeight = 0;//画布的高度
     var ThisConMou = false;//当前是否在截取区域按下状态
     var ThisTop = 0;//截取区域top-相对于移动区域
     var ThisLeft = 0;//截取区域left-相对于移动区域
@@ -129,6 +131,23 @@ var CanvasAvatar=(function () {
         SchParentLeft = $(".j-cae-sch").offset().left;//缩放进度条的left位置
     }
 
+    //canvas大小设置
+    var CanvasSizeInit = function (width,height) {
+        canvas.width = width;
+        canvas.height = height;
+    }
+
+    //截取图片
+    var IonImg = function () {
+        console.log("kkk")
+        //取得截取坐标
+        var x = ThisLeft / imgConWidth * imageWidth;
+        var y = ThisTop / imgConHeight * imageHeight;
+        var thewidth = imageWidth / imgConWidth * ThisWidth;
+        var theheight = imageHeight / imgConHeight * ThisHeight;
+        ctx.drawImage(image, x, y, thewidth, theheight, 0, 0, 180, 36);
+    }
+
     //选择图片
     $("#cae-fle").change(function(){
         var file = this.files[0];//得到文件
@@ -154,20 +173,15 @@ var CanvasAvatar=(function () {
                 //数据初始化
                 InitData();
 
-                var CanvasSizeInit = function () {
-                    var CanvasWidth = 0;
-                    var CanvasHeight = 0;
-                    if(ThisWidth > ThisHeight){
-                        CanvasWidth = 180;
-                        CanvasHeight = ThisHeight/ThisWidth*180;
-                    }else{
-                        CanvasHeight = 180;
-                        CanvasWidth = ThisWidth/ThisHeight*180;
-                    }
-                    $("#cae-canvas").width(CanvasWidth).height(CanvasHeight);
+                if(ThisWidth > ThisHeight){
+                    CanvasWidth = 180;
+                    CanvasHeight = ThisHeight/ThisWidth*180;
+                }else{
+                    CanvasHeight = 180;
+                    CanvasWidth = ThisWidth/ThisHeight*180;
                 }
-
-                CanvasSizeInit();
+                //canvas大小设置
+                CanvasSizeInit(CanvasWidth,CanvasHeight);
 
                 //重置截取区域位置
                 RemovalPositionSet(0,0,ThisWidth,ThisHeight);
@@ -182,14 +196,13 @@ var CanvasAvatar=(function () {
                 SchLeft = (SchParentWidth / ThisMax) * ThisWidth;
                 RippleScrollBarPositionSet(SchLeft);
 
-                //取得截取坐标
-                var x = ThisLeft / imgConWidth * imageWidth;
-                var y = ThisTop / imgConHeight * imageHeight;
-                var thewidth = imageWidth / imgConWidth * ThisWidth;
-                var theheight = imageHeight / imgConHeight * ThisHeight;
-                ctx.drawImage(image, x, y, thewidth, theheight, 0, 0, 180, 180);
+                //截取图片
+                IonImg();
             }
         }
+    })
+    $(".cae-sn").click(function () {
+        console.log(canvas.toDataURL())
     })
 
     //鼠标是否在截取区域中按下
@@ -248,14 +261,10 @@ var CanvasAvatar=(function () {
         if(ThisTop > ParenHeight - ThisHeight) ThisTop = ParenHeight - ThisHeight;
         if(ThisLeft < 0) ThisLeft = 0;
         if(ThisLeft > ParenWidth - ThisWidth) ThisLeft = ParenWidth - ThisWidth;
-        //取得截取坐标
-        var x = ThisLeft / imgConWidth * imageWidth;
-        var y = ThisTop / imgConHeight * imageHeight;
-        var thewidth = imageWidth / imgConWidth * ThisWidth;
-        var theheight = imageHeight / imgConHeight * ThisHeight;
-        ctx.drawImage(image, x, y, thewidth, theheight, 0, 0, 180, 180);
+        //截取图片
+        IonImg();
     })
-    
+
     //向左转
     $(".j-cae").on("click",".j-turn-left[caeActive='true']",function () {
         Rotate -= 90;
@@ -266,15 +275,11 @@ var CanvasAvatar=(function () {
         //数据初始化
         InitData();
 
-        //取得截取坐标
-        var x = ThisLeft / imgConWidth * imageWidth;
-        var y = ThisTop / imgConHeight * imageHeight;
-        var thewidth = imageWidth / imgConWidth * ThisWidth;
-        var theheight = imageHeight / imgConHeight * ThisHeight;
         ctx.translate(90,90);
         ctx.rotate(-90*Math.PI/180);
         ctx.translate(-90,-90);
-        ctx.drawImage(image, x, y, thewidth, theheight, 0, 0, 180, 180);
+        //截取图片
+        IonImg();
     })
 
     //向右转
@@ -287,14 +292,11 @@ var CanvasAvatar=(function () {
         InitData();
 
         //取得截取坐标
-        var x = ThisLeft / imgConWidth * imageWidth;
-        var y = ThisTop / imgConHeight * imageHeight;
-        var thewidth = imageWidth / imgConWidth * ThisWidth;
-        var theheight = imageHeight / imgConHeight * ThisHeight;
         ctx.translate(90,90);
         ctx.rotate(90*Math.PI/180);
         ctx.translate(-90,-90);
-        ctx.drawImage(image, x, y, thewidth, theheight, 0, 0, 180, 180);
+        //截取图片
+        IonImg();
     })
 
     //缩放
@@ -331,7 +333,7 @@ var CanvasAvatar=(function () {
     $(".j-cae").on("click",".j-cae-dld[caeActive='true']",function () {
         ImageDown('png');
     })
-    
+
     $(window).resize(function () {
         //数据初始化
         InitData();
@@ -340,9 +342,15 @@ var CanvasAvatar=(function () {
     return {
         getWidth : ThisWidth,
         getHeight : ThisHeight,
-        setRemovalSize : RemovalSizeSet
+        setRemovalSize : RemovalSizeSet,
+        getImg : canvas.toDataURL("image/png")
     }
 
 })();
 
 CanvasAvatar.setRemovalSize(50,10);
+$(".cae-sn").click(function () {
+    // var k = CanvasAvatar.getImg;
+    // console.log(k);
+    // $(".kkk").attr("src",k);
+})

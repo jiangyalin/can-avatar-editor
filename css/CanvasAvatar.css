@@ -18,7 +18,7 @@
 .cae-mn{
 	/*overflow: auto;*/
 	width: 100%;
-	height: 262px;
+	height: 277px;
 }
 .cae-mnc{
 	overflow: hidden;
@@ -201,6 +201,18 @@
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
+
+.cae-tips{
+	width: 100%;
+	height: auto;
+	text-align: center;
+}
+.cae-tips .cae-sn{
+	font-size: 12px;
+	color: #4a4a4a;
+	line-height: 24px;
+}
+
 .cae-rte{
 	display: none;
 }
