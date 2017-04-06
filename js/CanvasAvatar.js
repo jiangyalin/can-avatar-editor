@@ -18,6 +18,7 @@ var CanvasAvatar=(function () {
     var ThisWidthMax;//截取区域的宽度最大值(暂不支持非正方形)
     var ThisHeightMax;//截取区域的高度最大值(暂不支持非正方形)
     var ThisMax = 0;//截取区域的长宽最大值
+    var PonSet = 0;////截取区域的长宽比例
     var ThisWidth = 50;//截取区域width
     var ThisHeight = 50;//截取区域height
     var Rotate = 0;//偏离角度
@@ -32,8 +33,8 @@ var CanvasAvatar=(function () {
 
     //截取区域位置设置
     var RemovalPositionSet = function (top,left,width,height,topMax,leftMax) {
-        topMax = topMax || 180;
-        leftMax = leftMax || 180;
+        var leftMax = ParenWidth - ThisWidth;
+        var topMax = ParenHeight - ThisHeight;
         if(top >= 0 && left >= 0 && top <= topMax && left <= leftMax){//碰撞检测
             $(".j-cae-mb").css("transform","translate("+left+"px,"+top+"px)");
             $(".j-cae-img-tp").css("clip","rect("+top+"px,"+(left + width)+"px,"+(top + height)+"px,"+left+"px)");
@@ -56,9 +57,11 @@ var CanvasAvatar=(function () {
         if(status){
             $(".j-cae-flr").addClass("cae-active");
             $(".j-cae").find("[caeActive='false']").attr("caeActive","true");
+            $(".j-lel").addClass("cae-active");
         }else{
             $(".j-cae-flr").removeClass("cae-active");
             $(".j-cae").find("[caeActive='true']").attr("caeActive","false");
+            $(".j-lel").removeClass("cae-active");
         }
     }
 
@@ -111,8 +114,15 @@ var CanvasAvatar=(function () {
         ParentLeft = $(".j-cae-co").offset().left;//移动区域所在的left位置
         ParenWidth = $(".j-cae-co").width();//移动区域所在的宽度
         ParenHeight = $(".j-cae-co").height();//移动区域所在的高度
-        ThisWidthMax = ParenWidth - ThisLeft;//截取区域的宽度最大值
-        ThisHeightMax = ParenHeight - ThisTop;//截取区域的高度最大值
+        var ThisWidthMaxS = (ParenWidth - ThisLeft)/ThisWidth;
+        var ThisHeightMaxS = (ParenHeight - ThisTop)/ThisHeight;
+        if(ThisWidthMaxS < ThisHeightMaxS){
+            ThisWidthMax  = ThisWidthMaxS * ThisWidth;
+            ThisHeightMax  = ThisWidthMaxS * ThisHeight;
+        }else{
+            ThisWidthMax  = ThisHeightMaxS * ThisWidth;
+            ThisHeightMax  = ThisHeightMaxS * ThisHeight;
+        }
         imgConWidth = $(".j-cae-img-bm").width();//缩略图宽度
         imgConHeight = $(".j-cae-img-bm").height();//缩略图高度
         SchParentWidth = $(".j-cae-sch").width();//缩放进度条宽度
@@ -139,18 +149,33 @@ var CanvasAvatar=(function () {
                 InitImage(imageWidth,imageHeight,image.src);
 
                 //截取区域大小初始化
-                RemovalSizeSet(50,50);
+                // RemovalSizeSet(50,50);
 
                 //数据初始化
                 InitData();
+
+                var CanvasSizeInit = function () {
+                    var CanvasWidth = 0;
+                    var CanvasHeight = 0;
+                    if(ThisWidth > ThisHeight){
+                        CanvasWidth = 180;
+                        CanvasHeight = ThisHeight/ThisWidth*180;
+                    }else{
+                        CanvasHeight = 180;
+                        CanvasWidth = ThisWidth/ThisHeight*180;
+                    }
+                    $("#cae-canvas").width(CanvasWidth).height(CanvasHeight);
+                }
+
+                CanvasSizeInit();
 
                 //重置截取区域位置
                 RemovalPositionSet(0,0,ThisWidth,ThisHeight);
 
                 if(ThisWidthMax > ThisHeightMax){
-                    ThisMax = ThisHeightMax;
-                }else{
                     ThisMax = ThisWidthMax;
+                }else{
+                    ThisMax = ThisHeightMax;
                 }
 
                 //进度条位置初始化
@@ -176,7 +201,7 @@ var CanvasAvatar=(function () {
     })
 
     //截取区域拖动效果
-    $(".j-cae-mb").mousemove(function(ev){
+    $(".j-cae-co").mousemove(function(ev){
         var ThisBottom = 0;//截取区域距离拖动区间底部的距离
         var ThisRight = 0;//截取区域距离拖动区间右部的距离
         if(ThisConMou){
@@ -207,10 +232,8 @@ var CanvasAvatar=(function () {
             if(ThisBottom < 0){
                 ThisTop = ParenHeight - ThisHeight;
             }
-            var ThisLeftMax = ParenWidth - ThisWidth;
-            var ThisTopMax = ParenHeight - ThisHeight;
             //截取区域位置设置
-            RemovalPositionSet(ThisTop,ThisLeft,ThisWidth,ThisHeight,ThisTopMax,ThisLeftMax);
+            RemovalPositionSet(ThisTop,ThisLeft,ThisWidth,ThisHeight);
         }
     })
 
@@ -231,9 +254,6 @@ var CanvasAvatar=(function () {
         var thewidth = imageWidth / imgConWidth * ThisWidth;
         var theheight = imageHeight / imgConHeight * ThisHeight;
         ctx.drawImage(image, x, y, thewidth, theheight, 0, 0, 180, 180);
-
-        ThisWidthMax = ParenWidth - ThisLeft;//截取区域的宽度最大值
-        ThisHeightMax = ParenHeight - ThisTop;//截取区域的高度最大值
     })
     
     //向左转
@@ -290,13 +310,13 @@ var CanvasAvatar=(function () {
         //更改截取区域大小
         if(SchMou && SchLeft <= SchParentWidth && SchLeft >= 0){
             Scale = SchLeft / SchParentWidth;
-            ThisWidth = ThisMax * Scale;
-            ThisHeight = ThisMax * Scale;
-            if(ThisWidth > (ThisMax - ThisLeft)){
-                ThisLeft = ThisMax - ThisWidth;
+            ThisWidth = ThisWidthMax * Scale;
+            ThisHeight = ThisHeightMax * Scale;
+            if(ThisWidth > (ParenWidth - ThisLeft)){
+                ThisLeft = ParenWidth - ThisWidth;
             }
-            if(ThisHeight > (ThisMax - ThisTop)){
-                ThisTop = ThisMax - ThisHeight;
+            if(ThisHeight > (ParenHeight - ThisTop)){
+                ThisTop = ParenHeight - ThisHeight;
             }
             //截取区域位置设置
             RemovalPositionSet(ThisTop,ThisLeft,ThisWidth,ThisHeight);
@@ -317,55 +337,12 @@ var CanvasAvatar=(function () {
         InitData();
     })
 
+    return {
+        getWidth : ThisWidth,
+        getHeight : ThisHeight,
+        setRemovalSize : RemovalSizeSet
+    }
+
 })();
 
-CanvasAvatar;
-
-// var promisifiedOldGUM = function(constraints) {
-//
-//     // 第一个拿到getUserMedia，如果存在
-//     var getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia);
-//
-//     // 有些浏览器只是不实现它-返回一个不被拒绝的承诺与一个错误保持一致的接口
-//     if (!getUserMedia) {
-//         return Promise.reject(new Error('getUserMedia is not implemented in this browser-getUserMedia是不是在这个浏览器实现'));
-//     }
-//
-//     // 否则，调用包在一个旧navigator.getusermedia承诺
-//     return new Promise(function(resolve, reject) {
-//         getUserMedia.call(navigator, constraints, resolve, reject);
-//     });
-//
-// }
-//
-// // 旧的浏览器可能无法实现mediadevices可言，所以我们设置一个空的对象第一
-// if (navigator.mediaDevices === undefined) {
-//     navigator.mediaDevices = {};
-// }
-//
-// // 一些浏览器部分实现mediadevices。我们不能只指定一个对象
-// // 随着它将覆盖现有的性能getUserMedia。.
-// // 在这里，我们就要错过添加getUserMedia财产。.
-// if (navigator.mediaDevices.getUserMedia === undefined) {
-//     navigator.mediaDevices.getUserMedia = promisifiedOldGUM;
-// }
-//
-// // Prefer camera resolution nearest to 1280x720.
-// var constraints = {
-//     audio: false,
-//     video: {
-//         width: 720,
-//         height: 720
-//     }
-// };
-//
-// navigator.mediaDevices.getUserMedia(constraints)
-//     .then(function(stream) {
-//         var video = document.querySelector('video');
-//         video.src = window.URL.createObjectURL(stream);
-//         video.onloadedmetadata = function(e) {
-//             video.play();
-//         };
-//     }).catch(function(err) {
-//     console.log(err.name + ": " + err.message);
-// });
+CanvasAvatar.setRemovalSize(50,10);
