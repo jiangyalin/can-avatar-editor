@@ -31,7 +31,7 @@ var CanvasAvatar=(function () {
     var imgConWidth;//缩略图宽度
     var imgConHeight;//缩略图高度
     var canvas = document.getElementById("cae-canvas");//得到canvas对象
-    var ctx=canvas.getContext("2d");
+    var ctx = canvas.getContext("2d");
 
     //截取区域位置设置
     var RemovalPositionSet = function (top,left,width,height,topMax,leftMax) {
@@ -139,13 +139,17 @@ var CanvasAvatar=(function () {
 
     //截取图片
     var IonImg = function () {
-        console.log("kkk")
         //取得截取坐标
         var x = ThisLeft / imgConWidth * imageWidth;
         var y = ThisTop / imgConHeight * imageHeight;
         var thewidth = imageWidth / imgConWidth * ThisWidth;
         var theheight = imageHeight / imgConHeight * ThisHeight;
-        ctx.drawImage(image, x, y, thewidth, theheight, 0, 0, 180, 36);
+        ctx.drawImage(image, x, y, thewidth, theheight, 0, 0, CanvasWidth, CanvasHeight);
+    }
+
+    //取得截取的图片
+    var GetDataUrl = function () {
+        return canvas.toDataURL();
     }
 
     //选择图片
@@ -200,9 +204,6 @@ var CanvasAvatar=(function () {
                 IonImg();
             }
         }
-    })
-    $(".cae-sn").click(function () {
-        console.log(canvas.toDataURL())
     })
 
     //鼠标是否在截取区域中按下
@@ -340,17 +341,13 @@ var CanvasAvatar=(function () {
     })
 
     return {
-        getWidth : ThisWidth,
-        getHeight : ThisHeight,
         setRemovalSize : RemovalSizeSet,
-        getImg : canvas.toDataURL("image/png")
+        getImg : GetDataUrl,
     }
 
 })();
 
 CanvasAvatar.setRemovalSize(50,10);
 $(".cae-sn").click(function () {
-    // var k = CanvasAvatar.getImg;
-    // console.log(k);
-    // $(".kkk").attr("src",k);
+    console.log(CanvasAvatar.getImg());
 })
