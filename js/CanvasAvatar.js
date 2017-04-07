@@ -30,6 +30,7 @@ var CanvasAvatar=(function () {
     var imageHeight;//图片的原始高度
     var imgConWidth;//缩略图宽度
     var imgConHeight;//缩略图高度
+    var AreaWidth = 0;//放置控件宽度
     var imgSizeMax = 10240;//图片的最大限制（KB）
     var canvas = document.getElementById("cae-canvas");//得到canvas对象
     var ctx = canvas.getContext("2d");
@@ -121,6 +122,8 @@ var CanvasAvatar=(function () {
         ParenHeight = $(".j-cae-co").height();//移动区域所在的高度
         var ThisWidthMaxS = (ParenWidth - ThisLeft)/ThisWidth;
         var ThisHeightMaxS = (ParenHeight - ThisTop)/ThisHeight;
+        console.log("ThisWidthMaxS = "+ThisWidthMaxS);
+        console.log("ThisHeightMaxS = "+ThisHeightMaxS);
         if(ThisWidthMaxS < ThisHeightMaxS){
             ThisWidthMax  = ThisWidthMaxS * ThisWidth;
             ThisHeightMax  = ThisWidthMaxS * ThisHeight;
@@ -164,6 +167,14 @@ var CanvasAvatar=(function () {
     var SetTipsText = function (text) {
         $(".j-cae-tips").text(text);
     }
+    
+    //设置截取的图片的长宽
+    var SetRemovalImgSize = function (width,height) {
+        $(".j-cae-mnc-s").width(width).height(width);
+        $(".j-cae-flr").width(width+2);
+        $(".j-cae").width((width*2)+280-110*2);
+        AreaWidth = width;
+    }
 
     //选择图片
     $("#cae-fle").change(function(){
@@ -183,11 +194,11 @@ var CanvasAvatar=(function () {
                     var he = true;
                     var wi = true;;
                     if(imageWidth > imageHeight){
-                        if(180/imageWidth*imageHeight < ThisHeight){
+                        if(AreaWidth/imageWidth*imageHeight < ThisHeight){
                             he = false;
                         }
                     }else{
-                        if(180/imageHeight*imageWidth < ThisWidth){
+                        if(AreaWidth/imageHeight*imageWidth < ThisWidth){
                             wi = false;
                         }
                     }
@@ -207,11 +218,11 @@ var CanvasAvatar=(function () {
                         InitData();
 
                         if(ThisWidth > ThisHeight){
-                            CanvasWidth = 180;
-                            CanvasHeight = ThisHeight/ThisWidth*180;
+                            CanvasWidth = AreaWidth;
+                            CanvasHeight = ThisHeight/ThisWidth*AreaWidth;
                         }else{
-                            CanvasHeight = 180;
-                            CanvasWidth = ThisWidth/ThisHeight*180;
+                            CanvasHeight = AreaWidth;
+                            CanvasWidth = ThisWidth/ThisHeight*AreaWidth;
                         }
                         //canvas大小设置
                         CanvasSizeInit(CanvasWidth,CanvasHeight);
@@ -309,9 +320,9 @@ var CanvasAvatar=(function () {
         //数据初始化
         InitData();
 
-        ctx.translate(90,90);
+        ctx.translate(AreaWidth/2,AreaWidth/2);
         ctx.rotate(-90*Math.PI/180);
-        ctx.translate(-90,-90);
+        ctx.translate(-AreaWidth/2,-AreaWidth/2);
         //截取图片
         IonImg();
     })
@@ -326,9 +337,9 @@ var CanvasAvatar=(function () {
         InitData();
 
         //取得截取坐标
-        ctx.translate(90,90);
+        ctx.translate(AreaWidth/2,AreaWidth/2);
         ctx.rotate(90*Math.PI/180);
-        ctx.translate(-90,-90);
+        ctx.translate(-AreaWidth/2,-AreaWidth/2);
         //截取图片
         IonImg();
     })
@@ -375,14 +386,16 @@ var CanvasAvatar=(function () {
 
     return {
         setRemovalSize : RemovalSizeSet,
+        setRemovalImgSize : SetRemovalImgSize,
         getImg : GetDataUrl,
         getSizeMax : SetImgSizeMax,
     }
 
 })();
 
-CanvasAvatar.setRemovalSize(50,80);
+CanvasAvatar.setRemovalSize(50,50);
 CanvasAvatar.getSizeMax(5024);
+CanvasAvatar.setRemovalImgSize(210,180);
 $(".cae-sn").click(function () {
     console.log(CanvasAvatar.getImg());
 })
