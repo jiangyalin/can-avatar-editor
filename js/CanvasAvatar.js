@@ -35,7 +35,7 @@ var CanvasAvatar=(function () {
     var ctx = canvas.getContext("2d");
 
     //截取区域位置设置
-    var RemovalPositionSet = function (top,left,width,height,topMax,leftMax) {
+    var RemovalPositionSet = function (top,left,width,height) {
         var leftMax = ParenWidth - ThisWidth;
         var topMax = ParenHeight - ThisHeight;
         if(top >= 0 && left >= 0 && top <= topMax && left <= leftMax){//碰撞检测
