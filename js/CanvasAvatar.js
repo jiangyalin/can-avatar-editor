@@ -30,6 +30,7 @@ var CanvasAvatar=(function () {
     var imageHeight;//图片的原始高度
     var imgConWidth;//缩略图宽度
     var imgConHeight;//缩略图高度
+    var imgSizeMax = 10240;//图片的最大限制（KB）
     var canvas = document.getElementById("cae-canvas");//得到canvas对象
     var ctx = canvas.getContext("2d");
 
@@ -47,6 +48,8 @@ var CanvasAvatar=(function () {
     var RemovalSizeSet = function (width,height) {
         $(".j-cae-mb").width(width);
         $(".j-cae-mb").height(height);
+        ThisWidth = width;
+        ThisHeight = height;
     }
 
     //进度条位置设置
@@ -59,11 +62,11 @@ var CanvasAvatar=(function () {
         if(status){
             $(".j-cae-flr").addClass("cae-active");
             $(".j-cae").find("[caeActive='false']").attr("caeActive","true");
-            $(".j-lel").addClass("cae-active");
+            $(".j-cae-lel").addClass("cae-active");
         }else{
             $(".j-cae-flr").removeClass("cae-active");
             $(".j-cae").find("[caeActive='true']").attr("caeActive","false");
-            $(".j-lel").removeClass("cae-active");
+            $(".j-cae-lel").removeClass("cae-active");
         }
     }
 
@@ -152,57 +155,87 @@ var CanvasAvatar=(function () {
         return canvas.toDataURL();
     }
 
+    //图片的最大限制（KB）
+    var SetImgSizeMax = function (size) {
+        imgSizeMax = size;
+    }
+    
+    //设置提示信息
+    var SetTipsText = function (text) {
+        $(".j-cae-tips").text(text);
+    }
+
     //选择图片
     $("#cae-fle").change(function(){
         var file = this.files[0];//得到文件
         var reader = new FileReader();//新建空文件属性对象
         if(file != undefined)reader.readAsDataURL(file);//传入文件
-        reader.onload = function(){
-            var url = reader.result;//将得到的文件转成data64编码
-            image.src = url;//将input得到的url赋值给新建的图片对象
+        if((file.size / 1024) <= imgSizeMax){
+            SetTipsText("");
+            reader.onload = function(){
+                var url = reader.result;//将得到的文件转成data64编码
+                image.src = url;//将input得到的url赋值给新建的图片对象
 
-            image.onload = function () {
-                imageWidth = image.width;//图片的原始宽度
-                imageHeight = image.height;//图片的原始高度
+                image.onload = function () {
+                    imageWidth = image.width;//图片的原始宽度
+                    imageHeight = image.height;//图片的原始高度
 
-                //激活功能
-                Switch(true);
+                    var he = true;
+                    var wi = true;;
+                    if(imageWidth > imageHeight){
+                        if(180/imageWidth*imageHeight < ThisHeight){
+                            he = false;
+                        }
+                    }else{
+                        if(180/imageHeight*imageWidth < ThisWidth){
+                            wi = false;
+                        }
+                    }
 
-                //初始化图片
-                InitImage(imageWidth,imageHeight,image.src);
+                    if(he && wi){
 
-                //截取区域大小初始化
-                // RemovalSizeSet(50,50);
+                        //激活功能
+                        Switch(true);
 
-                //数据初始化
-                InitData();
+                        //初始化图片
+                        InitImage(imageWidth,imageHeight,image.src);
 
-                if(ThisWidth > ThisHeight){
-                    CanvasWidth = 180;
-                    CanvasHeight = ThisHeight/ThisWidth*180;
-                }else{
-                    CanvasHeight = 180;
-                    CanvasWidth = ThisWidth/ThisHeight*180;
+                        //截取区域大小初始化
+                        // RemovalSizeSet(50,50);
+
+                        //数据初始化
+                        InitData();
+
+                        if(ThisWidth > ThisHeight){
+                            CanvasWidth = 180;
+                            CanvasHeight = ThisHeight/ThisWidth*180;
+                        }else{
+                            CanvasHeight = 180;
+                            CanvasWidth = ThisWidth/ThisHeight*180;
+                        }
+                        //canvas大小设置
+                        CanvasSizeInit(CanvasWidth,CanvasHeight);
+
+                        //重置截取区域位置
+                        RemovalPositionSet(0,0,ThisWidth,ThisHeight);
+
+                        if(ThisWidthMax > ThisHeightMax){
+                            SchLeft = (SchParentWidth / ThisWidthMax) * ThisWidth;
+                        }else{
+                            SchLeft = (SchParentWidth / ThisHeightMax) * ThisWidth;
+                        }
+                        //进度条位置初始化
+                        RippleScrollBarPositionSet(SchLeft);
+
+                        //截取图片
+                        IonImg();
+                    }else{
+                        SetTipsText("图片长宽比例超过限制");
+                    }
                 }
-                //canvas大小设置
-                CanvasSizeInit(CanvasWidth,CanvasHeight);
-
-                //重置截取区域位置
-                RemovalPositionSet(0,0,ThisWidth,ThisHeight);
-
-                if(ThisWidthMax > ThisHeightMax){
-                    ThisMax = ThisWidthMax;
-                }else{
-                    ThisMax = ThisHeightMax;
-                }
-
-                //进度条位置初始化
-                SchLeft = (SchParentWidth / ThisMax) * ThisWidth;
-                RippleScrollBarPositionSet(SchLeft);
-
-                //截取图片
-                IonImg();
             }
+        }else{
+            SetTipsText("图片大小超过限制");
         }
     })
 
@@ -343,11 +376,13 @@ var CanvasAvatar=(function () {
     return {
         setRemovalSize : RemovalSizeSet,
         getImg : GetDataUrl,
+        getSizeMax : SetImgSizeMax,
     }
 
 })();
 
-CanvasAvatar.setRemovalSize(50,10);
+CanvasAvatar.setRemovalSize(50,80);
+CanvasAvatar.getSizeMax(5024);
 $(".cae-sn").click(function () {
     console.log(CanvasAvatar.getImg());
 })
