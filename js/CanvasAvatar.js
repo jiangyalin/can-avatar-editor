@@ -120,17 +120,19 @@ var CanvasAvatar=(function () {
         ParentLeft = $(".j-cae-co").offset().left;//移动区域所在的left位置
         ParenWidth = $(".j-cae-co").width();//移动区域所在的宽度
         ParenHeight = $(".j-cae-co").height();//移动区域所在的高度
-        var ThisWidthMaxS = (ParenWidth - ThisLeft)/ThisWidth;
-        var ThisHeightMaxS = (ParenHeight - ThisTop)/ThisHeight;
-        console.log("ThisWidthMaxS = "+ThisWidthMaxS);
-        console.log("ThisHeightMaxS = "+ThisHeightMaxS);
-        if(ThisWidthMaxS < ThisHeightMaxS){
-            ThisWidthMax  = ThisWidthMaxS * ThisWidth;
-            ThisHeightMax  = ThisWidthMaxS * ThisHeight;
+        // var ThisWidthMaxS = (ParenWidth - ThisLeft)/ThisWidth;
+        // var ThisHeightMaxS = (ParenHeight - ThisTop)/ThisHeight;
+        // console.log("ThisWidthMaxS = "+ThisWidthMaxS);
+        // console.log("ThisHeightMaxS = "+ThisHeightMaxS);
+        if(ParenWidth < ParenHeight){
+            ThisWidthMax = ParenWidth;
+            ThisHeightMax = ParenWidth;
         }else{
-            ThisWidthMax  = ThisHeightMaxS * ThisWidth;
-            ThisHeightMax  = ThisHeightMaxS * ThisHeight;
+            ThisWidthMax = ParenHeight;
+            ThisHeightMax = ParenHeight;
         }
+        // console.log("ThisWidthMax = "+ThisWidthMax);
+        // console.log("ThisHeightMax = "+ThisHeightMax);
         imgConWidth = $(".j-cae-img-bm").width();//缩略图宽度
         imgConHeight = $(".j-cae-img-bm").height();//缩略图高度
         SchParentWidth = $(".j-cae-sch").width();//缩放进度条宽度
@@ -357,6 +359,8 @@ var CanvasAvatar=(function () {
         //更改截取区域大小
         if(SchMou && SchLeft <= SchParentWidth && SchLeft >= 0){
             Scale = SchLeft / SchParentWidth;
+            // console.log("ThisWidthMax = "+ThisWidthMax)
+            // console.log("ThisWidthMax = "+ThisHeightMax)
             ThisWidth = ThisWidthMax * Scale;
             ThisHeight = ThisHeightMax * Scale;
             if(ThisWidth > (ParenWidth - ThisLeft)){
