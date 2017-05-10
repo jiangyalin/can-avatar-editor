@@ -186,6 +186,8 @@ var CanvasAvatar=(function () {
         if((file.size / 1024) <= imgSizeMax){
             SetTipsText("");
             reader.onload = function(){
+                Rotate = 0;
+                RotateDirection(Rotate);//重置偏转角度
                 var url = reader.result;//将得到的文件转成data64编码
                 image.src = url;//将input得到的url赋值给新建的图片对象
 
