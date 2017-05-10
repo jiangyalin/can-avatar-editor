@@ -162,6 +162,7 @@ var CanvasAvatar=(function () {
 
     //图片的最大限制（KB）
     var SetImgSizeMax = function (size) {
+        $(".j-max-size").text((size/1024).toFixed(2));
         imgSizeMax = size;
     }
     
@@ -391,17 +392,15 @@ var CanvasAvatar=(function () {
     })
 
     return {
-        setRemovalSize : RemovalSizeSet,
-        setRemovalImgSize : SetRemovalImgSize,
-        getImg : GetDataUrl,
-        getSizeMax : SetImgSizeMax,
+        setRemovalSize : RemovalSizeSet,//设置截取的大小
+        setRemovalImgSize : SetRemovalImgSize,//设置截取区域的大小
+        getImg : GetDataUrl,//截取的图片的编码
+        getSizeMax : SetImgSizeMax,//设置上传图片的最大限制
     }
 
 })();
 
+//初始化
 CanvasAvatar.setRemovalSize(50,50);
 CanvasAvatar.getSizeMax(5024);
-CanvasAvatar.setRemovalImgSize(210,180);
-$(".cae-sn").click(function () {
-    console.log(CanvasAvatar.getImg());
-})
+CanvasAvatar.setRemovalImgSize(180,180);
