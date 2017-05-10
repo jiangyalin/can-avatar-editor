@@ -1,6 +1,6 @@
 *{
-	padding: 0px;
-	margin: 0px;
+	padding: 0;
+	margin: 0;
 	list-style: none;
 	-webkit-user-select: none;
 	-moz-user-select: none;
@@ -30,16 +30,16 @@
 }
 .cae-vo{
     position: absolute;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
     z-index: 1;
     width: 100%;
     height: 100%;
 }
 .cae-co{
 	position: relative;
-	top: 0px;
-	left: 0px;
+	top: 0;
+	left: 0;
 	width: 100%;
 	height: 100%;
 	transform: rotate(0deg) scale(1);
