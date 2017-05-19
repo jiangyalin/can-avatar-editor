@@ -6,47 +6,48 @@
 	<link rel="stylesheet" href="css/CanvasAvatar.css" />
 </head>
 <body>
-	<div class="cae-bd j-cae">
-		<div class="cae-mn">
-			<div class="cae-fl j-cae-flr">
-				<div class="cae-mnc j-cae-mnc j-cae-mnc-s">
-                    <div class="cae-co j-cae-co">
-						<img class="cae-img cae-img-tp cae-img-wi cae-img-he j-cae-img j-cae-img-tp" src="img/ion.png" />
-						<img class="cae-img cae-img-bm cae-img-wi cae-img-he j-cae-img j-cae-img-bm" src="img/ion.png" />
-						<div class="cae-mb j-cae-mb"></div>
-					</div>
-				</div>
-				<div class="cae-btn-grp cae-tt">
-					<p class="cae-tt">当前图片</p>
-				</div>
-				<div class="cae-btn-grp cae-rte">
-					<span class="cae-btn cae-btn-fl j-turn-left" caeActive="false">左转</span>
-					<span class="cae-btn cae-btn-fr j-turn-right" caeActive="false">右转</span>
-				</div>
-				<div class="cae-btn-grp cae-ch">
-					<div class="cae-sch j-cae-sch">
-						<div class="cae-sch-btn j-cae-sch-btn" caeActive="false"></div>
-					</div>
+<div class="cae-bd j-cae">
+	<div class="cae-mn">
+		<div class="cae-fl j-cae-flr">
+			<div class="cae-mnc j-cae-mnc j-cae-mnc-s">
+				<div class="cae-co j-cae-co" caeActive="false">
+					<img class="cae-img cae-img-tp cae-img-wi cae-img-he j-cae-img j-cae-img-tp" src="img/ion.png" />
+					<img class="cae-img cae-img-bm cae-img-wi cae-img-he j-cae-img j-cae-img-bm" src="img/ion.png" />
+					<div class="cae-mb j-cae-mb"></div>
 				</div>
 			</div>
-			<div class="cae-fr j-cae-flr">
-				<div class="cae-mnc j-cae-mnc-s">
-					<label class="cae-lel j-cae-lel" for="cae-fle">
-						<canvas class="cae-cas" id="cae-canvas" width="1px" height="1px"></canvas>
-					</label>
-					<input class="cae-fle" id="cae-fle" type="file" accept="image/png,image/jpeg" />
-				</div>
-				<div class="cae-btn-grp">
-					<label class="cae-btn cae-btn-fl" for="cae-fle">图片上传</label>
-                    <span class="cae-btn cae-btn-fr cae-dld j-cae-dld" caeActive="false">图片下载</span>
+			<div class="cae-btn-grp cae-tt">
+				<p class="cae-tt">当前图片</p>
+			</div>
+			<div class="cae-btn-grp cae-rte">
+				<span class="cae-btn cae-btn-fl j-turn-left" caeActive="false">左转</span>
+				<span class="cae-btn cae-btn-fr j-turn-right" caeActive="false">右转</span>
+			</div>
+			<div class="cae-btn-grp cae-ch">
+				<div class="cae-sch j-cae-sch">
+					<div class="cae-sch-btn j-cae-sch-btn" caeActive="false"></div>
 				</div>
 			</div>
 		</div>
-		<div class="cae-tips">
-			<span class="cae-sn-tp j-cae-tips"></span>
-			<p class="cae-sn">支持jpg,jpeg,png格式，图片需小于<span class="j-cae-max-size">10</span>M</p>
+		<div class="cae-fr j-cae-flr">
+			<div class="cae-mnc j-cae-mnc-s">
+				<label class="cae-lel j-cae-lel" for="cae-fle">
+					<canvas class="cae-cas" id="cae-canvas" width="1px" height="1px"></canvas>
+				</label>
+				<input class="cae-fle" id="cae-fle" type="file" accept="image/png,image/jpg,image/gif" />
+			</div>
+			<div class="cae-btn-grp">
+				<label class="cae-btn cae-btn-fl" for="cae-fle">图片上传</label>
+				<span class="cae-btn cae-btn-fr cae-dld j-cae-dld" caeActive="false">图片下载</span>
+			</div>
 		</div>
 	</div>
+	<div class="cae-tips">
+		<span class="cae-sn-tp j-cae-tips"></span>
+		<p class="cae-sn">支持jpg,jpeg,png格式，图片需小于<span class="j-cae-max-size">10</span>M</p>
+		<img class="kkk" />
+	</div>
+</div>
 </body>
 <script type="text/javascript" src="js/jquery-2.1.0.js"></script>
 <script type="text/javascript" src="js/CanvasAvatar.js"></script>

@@ -43,7 +43,7 @@ var CanvasAvatar=(function () {
             $(".j-cae-mb").css("transform","translate("+left+"px,"+top+"px)");
             $(".j-cae-img-tp").css("clip","rect("+top+"px,"+(left + width)+"px,"+(top + height)+"px,"+left+"px)");
         }
-    }
+    };
 
     //截取区域大小设置
     var RemovalSizeSet = function (width,height) {
@@ -51,12 +51,12 @@ var CanvasAvatar=(function () {
         $(".j-cae-mb").height(height);
         ThisWidth = width;
         ThisHeight = height;
-    }
+    };
 
     //进度条位置设置
     var RippleScrollBarPositionSet = function (left) {
         $(".j-cae-sch-btn").css("transform","translate("+left+"px,0px)");
-    }
+    };
 
     //激活与关闭按钮
     var Switch = function (status) {
@@ -69,7 +69,7 @@ var CanvasAvatar=(function () {
             $(".j-cae").find("[caeActive='true']").attr("caeActive","false");
             $(".j-cae-lel").removeClass("cae-active");
         }
-    }
+    };
 
     //初始化图片
     var InitImage = function (width,height,url) {
@@ -82,12 +82,12 @@ var CanvasAvatar=(function () {
         $(".j-cae-img").attr("src",url);
         $(".j-cae-co").width($(".j-cae-img-bm").width()).height($(".j-cae-img-bm").height())
             .css({"top":($(".j-cae-mnc").height()-$(".j-cae-co").height())/2+"px","left":($(".j-cae-mnc").width()-$(".j-cae-co").width())/2+"px"});
-    }
+    };
 
     //方向旋转
     var RotateDirection = function (angle) {
         $(".j-cae-co").css("transform","rotate("+angle+"deg)");
-    }
+    };
 
     //图片下载功能
     var ImageDown = function (type) {
@@ -110,7 +110,7 @@ var CanvasAvatar=(function () {
         };
         var filename = 'img_' + (new Date()).getTime() + '.' + type;//给下载的图片命名
         saveFile(imgData,filename);
-    }
+    };
 
     //数据初始化
     var InitData = function () {
@@ -137,13 +137,13 @@ var CanvasAvatar=(function () {
         imgConHeight = $(".j-cae-img-bm").height();//缩略图高度
         SchParentWidth = $(".j-cae-sch").width();//缩放进度条宽度
         SchParentLeft = $(".j-cae-sch").offset().left;//缩放进度条的left位置
-    }
+    };
 
     //canvas大小设置
     var CanvasSizeInit = function (width,height) {
         canvas.width = width;
         canvas.height = height;
-    }
+    };
 
     //截取图片
     var IonImg = function () {
@@ -153,23 +153,23 @@ var CanvasAvatar=(function () {
         var thewidth = imageWidth / imgConWidth * ThisWidth;
         var theheight = imageHeight / imgConHeight * ThisHeight;
         ctx.drawImage(image, x, y, thewidth, theheight, 0, 0, CanvasWidth, CanvasHeight);
-    }
+    };
 
     //取得截取的图片
     var GetDataUrl = function () {
         return canvas.toDataURL();
-    }
+    };
 
     //图片的最大限制（KB）
     var SetImgSizeMax = function (size) {
         $(".j-cae-max-size").text((size/1024).toFixed(2));
         imgSizeMax = size;
-    }
+    };
 
     //设置提示信息
     var SetTipsText = function (text) {
         $(".j-cae-tips").text(text);
-    }
+    };
 
     //设置截取的图片的长宽
     var SetRemovalImgSize = function (width,height) {
@@ -177,7 +177,15 @@ var CanvasAvatar=(function () {
         $(".j-cae-flr").width(width+2);
         $(".j-cae").width((width*2)+280-110*2);
         AreaWidth = width;
-    }
+    };
+
+    //初始化dome
+    var InitDome = function () {
+        Switch(false);
+        CanvasSizeInit(0,0);
+        RemovalSizeSet(50,50);
+        $("#cae-fle").val("");
+    };
 
     //选择图片
     $("#cae-fle").change(function(){
@@ -397,8 +405,17 @@ var CanvasAvatar=(function () {
         setRemovalImgSize : SetRemovalImgSize,//设置截取区域的大小
         getImg : GetDataUrl,//截取的图片的编码
         getSizeMax : SetImgSizeMax,//设置上传图片的最大限制
-        InitImage : InitImage//初始化图片
+        InitImage : InitImage,//初始化图片
+        InitDome : InitDome//初始化dome
     }
 
 })();
+
+CanvasAvatar.setRemovalSize(50,50);
+CanvasAvatar.getSizeMax(5024);
+CanvasAvatar.setRemovalImgSize(210,180);
+$(".cae-sn").click(function () {
+    console.log("ppp")
+    CanvasAvatar.InitDome();
+});
 
