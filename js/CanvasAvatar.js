@@ -250,6 +250,13 @@ var CanvasAvatar=(function () {
                         //数据初始化
                         InitData();
 
+                        //截取区域最大
+                        if(imgConWidth > imgConHeight){
+                            RemovalSizeSet(imgConHeight,imgConHeight);
+                        }else{
+                            RemovalSizeSet(imgConWidth,imgConWidth);
+                        }
+
                         if(ThisWidth > ThisHeight){
                             CanvasWidth = AreaWidth;
                             CanvasHeight = ThisHeight/ThisWidth*AreaWidth;
@@ -431,9 +438,8 @@ var CanvasAvatar=(function () {
 
 })();
 
-CanvasAvatar.setRemovalSize(50,50);
 CanvasAvatar.getSizeMax(5024);
-CanvasAvatar.setRemovalImgSize(210,180);
+CanvasAvatar.setRemovalImgSize(210,210);
 $(".cae-sn").click(function () {
     console.log("ppp");
     console.log(CanvasAvatar.getImg())
