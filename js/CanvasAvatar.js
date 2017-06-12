@@ -428,7 +428,7 @@ var CanvasAvatar=(function () {
     });
 
     return {
-        setRemovalSize : RemovalSizeSet,//设置截取的大小
+        setRemovalSize : RemovalSizeSet,//设置截取的大小(禁用)
         setRemovalImgSize : SetRemovalImgSize,//设置截取区域的大小
         getImg : GetDataUrl,//截取的图片的编码
         getSizeMax : SetImgSizeMax,//设置上传图片的最大限制
