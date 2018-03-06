@@ -41,49 +41,99 @@ var CanvasAvatar=(function () {
     var RemovalPositionSet = function (top, left, width, height) {
         var leftMax = ParenWidth - ThisWidth;
         var topMax = ParenHeight - ThisHeight;
-        if(top >= 0 && left >= 0 && top <= topMax && left <= leftMax){ // 碰撞检测
-            $(".j-cae-mb").css("transform","translate(" + left + "px," + top + "px)");
-            $(".j-cae-img-tp").css("clip", "rect(" + top + "px," + (left + width) + "px," + (top + height) + "px," + left + "px)");
+        if (top >= 0 && left >= 0 && top <= topMax && left <= leftMax) { // 碰撞检测
+            var jCaeMb = document.getElementsByClassName('j-cae-mb')[0];
+            jCaeMb.style.transform = 'translate(' + left + 'px ,' + top + 'px)';
+            // $(".j-cae-mb").css("transform","translate(" + left + "px," + top + "px)");
+            var jCaeImgTp = document.getElementsByClassName('j-cae-img-tp')[0];
+            jCaeImgTp.style.clip = 'rect(' + top + 'px, ' + (left + width) + 'px, ' + (top + height) + 'px, ' + left + 'px)';
+            // $(".j-cae-img-tp").css("clip", "rect(" + top + "px," + (left + width) + "px," + (top + height) + "px," + left + "px)");
         }
     };
 
     // 截取区域大小设置
     var RemovalSizeSet = function (width,height) {
-        $(".j-cae-mb").width(width);
-        $(".j-cae-mb").height(height);
+        var jCaeMb = document.getElementsByClassName('j-cae-mb')[0];
+        jCaeMb.style.width = width + 'px';
+        jCaeMb.style.height = height + 'px';
+        // $(".j-cae-mb").width(width);
+        // $(".j-cae-mb").height(height);
         ThisWidth = width;
         ThisHeight = height;
     };
 
     // 进度条位置设置
     var RippleScrollBarPositionSet = function (left) {
-        $(".j-cae-sch-btn").css("transform","translate(" + left + "px, 0px)");
+        var jCaeSchBtn = document.getElementsByClassName('j-cae-sch-btn')[0];
+        jCaeSchBtn.style.transform = 'translate(' + left + 'px, 0px)';
+        // $(".j-cae-sch-btn").css("transform", "translate(" + left + "px, 0px)");
     };
 
     // 激活与关闭按钮
     var Switch = function (status) {
-        if(status){
-            $(".j-cae-flr").addClass("cae-active");
-            $(".j-cae").find("[caeActive='false']").attr("caeActive","true");
-            $(".j-cae-lel").addClass("cae-active");
-        }else{
-            $(".j-cae-flr").removeClass("cae-active");
-            $(".j-cae").find("[caeActive='true']").attr("caeActive","false");
-            $(".j-cae-lel").removeClass("cae-active");
+        var jCaeFlr = document.getElementsByClassName('j-cae-flr');
+        // console.log(document.querySelectorAll('.j-cae')[0].querySelectorAll("[caeActive = 'false']"))
+        // console.log(document.querySelectorAll('.j-cae')[0].querySelectorAll("[caeActive = 'true']"))
+        var jCae = document.querySelectorAll('.j-cae')[0].querySelectorAll("[caeActive = 'false']");
+        var jCaeLel = document.querySelectorAll('.j-cae-lel');
+        if (status) {
+            jCaeFlr[0].classList.add('cae-active');
+            jCaeFlr[1].classList.add('cae-active');
+            // $(".j-cae-flr").addClass("cae-active");
+            jCae.forEach(function (data) {
+                data.setAttribute('caeActive', 'true');
+            });
+            // $(".j-cae").find("[caeActive = 'false']").attr("caeActive", "true");
+            jCaeLel[0].classList.add('cae-active');
+            // $(".j-cae-lel").addClass("cae-active");
+        } else {
+            jCaeFlr[0].classList.remove('cae-active');
+            jCaeFlr[1].classList.remove('cae-active');
+            // $(".j-cae-flr").removeClass("cae-active");
+            jCae.forEach(function (data) {
+                data.setAttribute('caeActive', 'false');
+            });
+            // $(".j-cae").find("[caeActive = 'true']").attr("caeActive", "false");
+            jCaeLel[0].classList.remove('cae-active');
+            // $(".j-cae-lel").removeClass("cae-active");
         }
     };
 
     // 初始化图片
-    var InitImage = function (width,height,url) {
-        $(".j-cae-co").css({ "width": "100%", "height": "100%", "top": "0", "left": "0" });
+    var InitImage = function (width, height, url) {
+        var jCaeCo = document.querySelectorAll('.j-cae-co');
+        jCaeCo[0].style.width = '100%';
+        jCaeCo[0].style.height = '100%';
+        jCaeCo[0].style.top = '0';
+        jCaeCo[0].style.left = '0';
+        // $(".j-cae-co").css({ "width": "100%", "height": "100%", "top": "0", "left": "0" });
+        var jCaeImg = document.querySelectorAll('.j-cae-img');
         if (width < height) {
-            $(".j-cae-img").addClass("cae-img-he").removeClass("cae-img-wi");
+            jCaeImg.forEach(function (data) {
+                data.classList.add('cae-img-he');
+                data.classList.remove('cae-img-wi');
+            });
+            // $(".j-cae-img").addClass("cae-img-he").removeClass("cae-img-wi");
         } else {
-            $(".j-cae-img").addClass("cae-img-wi").removeClass("cae-img-he");
+            jCaeImg.forEach(function (data) {
+                data.classList.add('cae-img-wi');
+                data.classList.remove('cae-img-he');
+            });
+            // $(".j-cae-img").addClass("cae-img-wi").removeClass("cae-img-he");
         }
-        $(".j-cae-img").attr("src", url);
+        jCaeImg.forEach(function (data) {
+            data.src = url;
+        });
+        // $(".j-cae-img").attr("src", url);
+        var jCaeImgBm = document.querySelectorAll('.j-cae-img-bm');
+        var jCaeMnc = document.querySelectorAll('.j-cae-mnc');
+        // console.log(jCaeImgBm[0].width)
+        jCaeCo[0].style.width = jCaeImgBm[0].width + 'px';
+        jCaeCo[0].style.height = jCaeImgBm[0].height + 'px';
+        jCaeCo[0].style.top = (jCaeMnc[0].height - jCaeCo[0].height) / 2 + 'px';
+        jCaeCo[0].style.left = (jCaeMnc[0].width - jCaeCo[0].width) / 2 + 'px';
         $(".j-cae-co").width($(".j-cae-img-bm").width()).height($(".j-cae-img-bm").height())
-            .css({"top":($(".j-cae-mnc").height() - $(".j-cae-co").height()) / 2 + "px", "left": ($(".j-cae-mnc").width() - $(".j-cae-co").width()) / 2 + "px"});
+            .css({"top": ($(".j-cae-mnc").height() - $(".j-cae-co").height()) / 2 + "px", "left": ($(".j-cae-mnc").width() - $(".j-cae-co").width()) / 2 + "px"});
     };
 
     // 方向旋转
