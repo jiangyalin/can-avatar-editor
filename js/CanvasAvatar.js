@@ -1,6 +1,6 @@
 var CanvasAvatar=(function () {
 
-    //声明变量
+    // 声明变量
     var fileName = ''; // 原始文件名
     var SchMou = false; // 缩放控件是否按下状态
     var ClaRangeTop = 0; // 鼠标在截取区域元素中的top位置
