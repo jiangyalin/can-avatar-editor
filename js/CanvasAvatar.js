@@ -1,12 +1,39 @@
 var CanvasAvatar=(function () {
 
+    // 获取元素距离文档left的距离
+    var getElementLeft = function (element) {
+        var actualLeft = element.offsetLeft;
+        var current = element.offsetParent;
+
+        while (current !== null){
+            actualLeft += current.offsetLeft;
+            current = current.offsetParent;
+        }
+
+        return actualLeft;
+    };
+
+    // 获取元素距离文档top的距离
+    var getElementTop = function (element) {
+        var actualTop = element.offsetTop;
+        var current = element.offsetParent;
+
+        while (current !== null){
+            actualTop += current.offsetTop;
+            current = current.offsetParent;
+        }
+
+        return actualTop;
+    };
+    
     // 声明变量
     var fileName = ''; // 原始文件名
     var SchMou = false; // 缩放控件是否按下状态
     var ClaRangeTop = 0; // 鼠标在截取区域元素中的top位置
     var ClaRangeLeft = 0; // 鼠标在截取区域元素中的left位置
-    var SchParentWidth = $(".j-cae-sch").width(); // 缩放进度条宽度
-    var SchParentLeft = $(".j-cae-sch").offset().left; // 缩放进度条的left位置
+    var jCaeSch = document.querySelectorAll('.j-cae-sch');
+    var SchParentWidth = jCaeSch[0].clientWidth; // 缩放进度条宽度
+    var SchParentLeft = getElementLeft(jCaeSch[0]); // 缩放进度条的left位置
     var SchRangeLeft = 0; // 鼠标在缩放按钮元素中的left位置
     var SchLeft = 0; // 缩放按钮元素的top位置
     var ParentTop; // 移动区域所在的top位置
@@ -41,54 +68,85 @@ var CanvasAvatar=(function () {
     var RemovalPositionSet = function (top, left, width, height) {
         var leftMax = ParenWidth - ThisWidth;
         var topMax = ParenHeight - ThisHeight;
-        if(top >= 0 && left >= 0 && top <= topMax && left <= leftMax){ // 碰撞检测
-            $(".j-cae-mb").css("transform","translate(" + left + "px," + top + "px)");
-            $(".j-cae-img-tp").css("clip", "rect(" + top + "px," + (left + width) + "px," + (top + height) + "px," + left + "px)");
+        if (top >= 0 && left >= 0 && top <= topMax && left <= leftMax) { // 碰撞检测
+            var jCaeMb = document.getElementsByClassName('j-cae-mb')[0];
+            jCaeMb.style.transform = 'translate(' + left + 'px ,' + top + 'px)';
+            var jCaeImgTp = document.getElementsByClassName('j-cae-img-tp')[0];
+            jCaeImgTp.style.clip = 'rect(' + top + 'px, ' + (left + width) + 'px, ' + (top + height) + 'px, ' + left + 'px)';
         }
     };
 
     // 截取区域大小设置
     var RemovalSizeSet = function (width,height) {
-        $(".j-cae-mb").width(width);
-        $(".j-cae-mb").height(height);
+        var jCaeMb = document.getElementsByClassName('j-cae-mb')[0];
+        jCaeMb.style.width = width + 'px';
+        jCaeMb.style.height = height + 'px';
         ThisWidth = width;
         ThisHeight = height;
     };
 
     // 进度条位置设置
     var RippleScrollBarPositionSet = function (left) {
-        $(".j-cae-sch-btn").css("transform","translate(" + left + "px, 0px)");
+        var jCaeSchBtn = document.getElementsByClassName('j-cae-sch-btn')[0];
+        jCaeSchBtn.style.transform = 'translate(' + left + 'px, 0px)';
     };
 
     // 激活与关闭按钮
     var Switch = function (status) {
-        if(status){
-            $(".j-cae-flr").addClass("cae-active");
-            $(".j-cae").find("[caeActive='false']").attr("caeActive","true");
-            $(".j-cae-lel").addClass("cae-active");
-        }else{
-            $(".j-cae-flr").removeClass("cae-active");
-            $(".j-cae").find("[caeActive='true']").attr("caeActive","false");
-            $(".j-cae-lel").removeClass("cae-active");
+        var jCaeFlr = document.getElementsByClassName('j-cae-flr');
+        var jCae = document.querySelectorAll('.j-cae')[0];
+        var jCaeLel = document.querySelectorAll('.j-cae-lel');
+        if (status) {
+            jCaeFlr[0].classList.add('cae-active');
+            jCaeFlr[1].classList.add('cae-active');
+            jCae.querySelectorAll("[caeActive = 'false']").forEach(function (data) {
+                data.setAttribute('caeActive', 'true');
+            });
+            jCaeLel[0].classList.add('cae-active');
+        } else {
+            jCaeFlr[0].classList.remove('cae-active');
+            jCaeFlr[1].classList.remove('cae-active');
+            jCae.querySelectorAll("[caeActive = 'true']").forEach(function (data) {
+                data.setAttribute('caeActive', 'false');
+            });
+            jCaeLel[0].classList.remove('cae-active');
         }
     };
 
     // 初始化图片
-    var InitImage = function (width,height,url) {
-        $(".j-cae-co").css({ "width": "100%", "height": "100%", "top": "0", "left": "0" });
+    var InitImage = function (width, height, url) {
+        var jCaeCo = document.querySelectorAll('.j-cae-co');
+        jCaeCo[0].style.width = '100%';
+        jCaeCo[0].style.height = '100%';
+        jCaeCo[0].style.top = '0';
+        jCaeCo[0].style.left = '0';
+        var jCaeImg = document.querySelectorAll('.j-cae-img');
         if (width < height) {
-            $(".j-cae-img").addClass("cae-img-he").removeClass("cae-img-wi");
+            jCaeImg.forEach(function (data) {
+                data.classList.add('cae-img-he');
+                data.classList.remove('cae-img-wi');
+            });
         } else {
-            $(".j-cae-img").addClass("cae-img-wi").removeClass("cae-img-he");
+            jCaeImg.forEach(function (data) {
+                data.classList.add('cae-img-wi');
+                data.classList.remove('cae-img-he');
+            });
         }
-        $(".j-cae-img").attr("src", url);
-        $(".j-cae-co").width($(".j-cae-img-bm").width()).height($(".j-cae-img-bm").height())
-            .css({"top":($(".j-cae-mnc").height() - $(".j-cae-co").height()) / 2 + "px", "left": ($(".j-cae-mnc").width() - $(".j-cae-co").width()) / 2 + "px"});
+        jCaeImg.forEach(function (data) {
+            data.src = url;
+        });
+        var jCaeImgBm = document.querySelectorAll('.j-cae-img-bm');
+        var jCaeMnc = document.querySelectorAll('.j-cae-mnc');
+        jCaeCo[0].style.width = jCaeImgBm[0].clientWidth + 'px';
+        jCaeCo[0].style.height = jCaeImgBm[0].clientHeight + 'px';
+        jCaeCo[0].style.top = (jCaeMnc[0].clientHeight - jCaeCo[0].clientHeight) / 2 + 'px';
+        jCaeCo[0].style.left = (jCaeMnc[0].clientWidth - jCaeCo[0].clientWidth) / 2 + 'px';
     };
 
     // 方向旋转
     var RotateDirection = function (angle) {
-        $(".j-cae-co").css("transform", "rotate(" + angle + "deg)");
+        var jCaeCo = document.querySelectorAll('.j-cae-co');
+        jCaeCo[0].style.transform = 'rotate(' + angle + 'deg)';
     };
 
     // 图片下载功能
@@ -111,17 +169,19 @@ var CanvasAvatar=(function () {
             save_link.dispatchEvent(event);
         };
         var filename = 'img_' + (new Date()).getTime() + '.' + type; // 给下载的图片命名
-        saveFile(imgData,filename);
+        saveFile(imgData, filename);
     };
 
     //数据初始化
     var InitData = function () {
-        ThisWidth = $(".j-cae-mb").width(); // 截取区域width
-        ThisHeight = $(".j-cae-mb").height(); // 截取区域height
-        ParentTop = $(".j-cae-co").offset().top; // 移动区域所在的top位置
-        ParentLeft = $(".j-cae-co").offset().left; // 移动区域所在的left位置
-        ParenWidth = $(".j-cae-co").width(); // 移动区域所在的宽度
-        ParenHeight = $(".j-cae-co").height(); // 移动区域所在的高度
+        var jCaeMb = document.querySelectorAll('.j-cae-mb');
+        ThisWidth = jCaeMb[0].clientWidth; // 截取区域width
+        ThisHeight = jCaeMb[0].clientHeight; // 截取区域height
+        var jCaeCo = document.querySelectorAll('.j-cae-co');
+        ParentTop = getElementTop(jCaeCo[0]); // 移动区域所在的top位置
+        ParentLeft = getElementLeft(jCaeCo[0]); // 移动区域所在的left位置
+        ParenWidth = jCaeCo[0].clientWidth; // 移动区域所在的宽度
+        ParenHeight = jCaeCo[0].clientHeight; // 移动区域所在的高度
         if (ParenWidth < ParenHeight) {
             ThisWidthMax = ParenWidth;
             ThisHeightMax = ParenWidth;
@@ -129,10 +189,12 @@ var CanvasAvatar=(function () {
             ThisWidthMax = ParenHeight;
             ThisHeightMax = ParenHeight;
         }
-        imgConWidth = $(".j-cae-img-bm").width(); // 缩略图宽度
-        imgConHeight = $(".j-cae-img-bm").height(); // 缩略图高度
-        SchParentWidth = $(".j-cae-sch").width(); // 缩放进度条宽度
-        SchParentLeft = $(".j-cae-sch").offset().left; // 缩放进度条的left位置
+        var jCaeImgBm = document.querySelectorAll('.j-cae-img-bm');
+        imgConWidth = jCaeImgBm[0].clientWidth; // 缩略图宽度
+        imgConHeight = jCaeImgBm[0].clientHeight; // 缩略图高度
+        var jCaeSch = document.querySelectorAll('.j-cae-sch');
+        SchParentWidth = jCaeSch[0].clientWidth; // 缩放进度条宽度
+        SchParentLeft = getElementLeft(jCaeSch[0]); // 缩放进度条的left位置
     };
 
     // canvas大小设置
@@ -169,29 +231,40 @@ var CanvasAvatar=(function () {
 
     // 图片的最大限制（KB）
     var SetImgSizeMax = function (size) {
-        $(".j-cae-max-size").text((size / 1024).toFixed(2));
+        var jCaeMaxSize = document.querySelectorAll('.j-cae-max-size');
+        jCaeMaxSize[0].innerText = (size / 1024).toFixed(2);
         imgSizeMax = size;
     };
 
     // 设置提示信息
     var SetTipsText = function (text) {
-        $(".j-cae-tips").text(text);
+        var jCaeTips = document.querySelectorAll('.j-cae-tips');
+        jCaeTips[0].innerText = text;
     };
 
     // 设置截取的图片的长宽
     var SetRemovalImgSize = function (width, height) {
-        $(".j-cae-mnc-s").width(width).height(width);
-        $(".j-cae-flr").width(width+2);
-        $(".j-cae").width((width*2)+280-110*2);
+        var jCaeMncS = document.querySelectorAll('.j-cae-mnc-s');
+        jCaeMncS.forEach(function (data) {
+            data.style.width = width + 'px';
+            data.style.height = width + 'px';
+        });
+        var jCaeFlr = document.querySelectorAll('.j-cae-flr');
+        jCaeFlr.forEach(function (data) {
+            data.style.width = (width + 2) + 'px';
+        });
+        var jCae = document.querySelectorAll('.j-cae');
+        jCae[0].style.width = ((width * 2) + 280) + 'px';
         AreaWidth = width;
     };
 
     // 初始化dome
     var InitDome = function () {
         Switch(false);
-        CanvasSizeInit(0,0);
-        RemovalSizeSet(50,50);
-        $("#cae-fle").val("");
+        CanvasSizeInit(0, 0);
+        RemovalSizeSet(50, 50);
+        var caeFle = document.querySelectorAll('#cae-fle');
+        caeFle[0].value = '';
         fileName = '';
         imgData = {
             name: '',
@@ -201,14 +274,15 @@ var CanvasAvatar=(function () {
     };
 
     // 选择图片
-    $("#cae-fle").change(function(){
-        fileName = $(this).val().substring($(this).val().lastIndexOf("\\")+1);
+    var caeFle = document.querySelectorAll('#cae-fle');
+    caeFle[0].addEventListener('change', function () {
+        fileName = caeFle[0].value.substring(caeFle[0].value.lastIndexOf("\\") + 1);
         var file = this.files[0]; // 得到文件
         var reader = new FileReader(); // 新建空文件属性对象
         if (file != undefined) reader.readAsDataURL(file); // 传入文件
         if ((file.size / 1024) <= imgSizeMax) {
-            SetTipsText("");
-            reader.onload = function(){
+            SetTipsText('');
+            reader.onload = function (){
                 Rotate = 0;
                 RotateDirection(Rotate); // 重置偏转角度
                 var url = reader.result; // 将得到的文件转成data64编码
@@ -221,11 +295,11 @@ var CanvasAvatar=(function () {
                     var he = true;
                     var wi = true;
                     if (imageWidth > imageHeight) {
-                        if (AreaWidth/imageWidth*imageHeight < ThisHeight) {
+                        if (AreaWidth / imageWidth*imageHeight < ThisHeight) {
                             he = false;
                         }
                     } else {
-                        if (AreaWidth/imageHeight*imageWidth < ThisWidth) {
+                        if (AreaWidth / imageHeight*imageWidth < ThisWidth) {
                             wi = false;
                         }
                     }
@@ -236,27 +310,27 @@ var CanvasAvatar=(function () {
                         Switch(true);
 
                         // 初始化图片
-                        InitImage(imageWidth,imageHeight,image.src);
+                        InitImage(imageWidth, imageHeight, image.src);
 
                         // 截取区域大小初始化
-                        // RemovalSizeSet(50,50);
+                        // RemovalSizeSet(50, 50);
 
                         // 数据初始化
                         InitData();
 
                         // 截取区域最大
                         if (imgConWidth > imgConHeight) {
-                            RemovalSizeSet(imgConHeight,imgConHeight);
+                            RemovalSizeSet(imgConHeight, imgConHeight);
                         } else {
-                            RemovalSizeSet(imgConWidth,imgConWidth);
+                            RemovalSizeSet(imgConWidth, imgConWidth);
                         }
 
                         if (ThisWidth > ThisHeight) {
                             CanvasWidth = AreaWidth;
-                            CanvasHeight = ThisHeight/ThisWidth*AreaWidth;
+                            CanvasHeight = ThisHeight / ThisWidth * AreaWidth;
                         } else {
                             CanvasHeight = AreaWidth;
-                            CanvasWidth = ThisWidth/ThisHeight*AreaWidth;
+                            CanvasWidth = ThisWidth / ThisHeight * AreaWidth;
                         }
                         // canvas大小设置
                         CanvasSizeInit(CanvasWidth, CanvasHeight);
@@ -285,30 +359,35 @@ var CanvasAvatar=(function () {
     });
 
     // 鼠标是否在截取区域中按下
-    $(".j-cae-mb").mousedown(function(ev){
+    var jCaeMb = document.querySelectorAll('.j-cae-mb');
+    jCaeMb[0].addEventListener('mousedown', function (ev) {
         ThisConMou = true;
         // 鼠标在选中区中的位置
-        ClaRangeTop = ev.pageY - $(this).offset().top;
-        ClaRangeLeft = ev.pageX - $(this).offset().left;
+        var text = jCaeMb[0].style.transform;
+        var translateX = Number(text.substring(text.indexOf('(') + 1, text.indexOf('p')));
+        var translateY = Number(text.substring(text.lastIndexOf(',') + 1, text.lastIndexOf('p')));
+        ClaRangeTop = ev.pageY - getElementTop(this) - translateY;
+        ClaRangeLeft = ev.pageX - getElementLeft(this) - translateX;
     });
 
     // 截取区域拖动效果
-    $(".j-cae-co").mousemove(function(ev){
+    var jCaeCo = document.querySelectorAll('.j-cae-co');
+    jCaeCo[0].addEventListener('mousemove', function (ev) {
         var ThisBottom = 0; // 截取区域距离拖动区间底部的距离
         var ThisRight = 0; // 截取区域距离拖动区间右部的距离
         if (ThisConMou) {
             ThisBottom = ParenHeight- ThisTop - ThisHeight; // 截取区域底部距离拖动区间顶部的距离
             ThisRight = ParenWidth - ThisLeft - ThisWidth; // 截取区域右部距离拖动区间左部的距离
-            if(Rotate % 360 == 0){
+            if (Rotate % 360 == 0) {
                 ThisTop = ev.pageY - ParentTop - ClaRangeTop;
                 ThisLeft = ev.pageX - ParentLeft - ClaRangeLeft;
-            }else if(Rotate % 360 == -90 || Rotate % 360 == 270){
+            } else if (Rotate % 360 == -90 || Rotate % 360 == 270) {
                 ThisTop = ev.pageX - ParentLeft - ClaRangeLeft;
                 ThisLeft = ParenWidth- (ev.pageY - ParentTop - ClaRangeTop) - ThisHeight;
-            }else if (Rotate % 360 == -180 || Rotate % 360 == 180){
+            } else if (Rotate % 360 == -180 || Rotate % 360 == 180) {
                 ThisTop = ParenHeight - (ev.pageY - ParentTop - ClaRangeTop) - ThisHeight;
                 ThisLeft = ParenWidth- (ev.pageX - ParentLeft - ClaRangeLeft) - ThisWidth;
-            }else if (Rotate % 360 == -270 || Rotate % 360 == 90){
+            } else if (Rotate % 360 == -270 || Rotate % 360 == 90) {
                 ThisTop = ParenHeight - (ev.pageX - ParentLeft - ClaRangeLeft) - ThisHeight;
                 ThisLeft = ev.pageY - ParentTop - ClaRangeTop;
             }
@@ -322,63 +401,77 @@ var CanvasAvatar=(function () {
     });
 
     // 当鼠标抬起时截取图片
-    $(document).mouseup(function(){
+    document.addEventListener('mouseup', function () {
         ThisConMou = false;
         SchMou = false;
 
         // 截取图片
         // 截取越界重置
-        if(ThisTop < 0) ThisTop = 0;
-        if(ThisTop > ParenHeight - ThisHeight) ThisTop = ParenHeight - ThisHeight;
-        if(ThisLeft < 0) ThisLeft = 0;
-        if(ThisLeft > ParenWidth - ThisWidth) ThisLeft = ParenWidth - ThisWidth;
+        if (ThisTop < 0) ThisTop = 0;
+        if (ThisTop > ParenHeight - ThisHeight) ThisTop = ParenHeight - ThisHeight;
+        if (ThisLeft < 0) ThisLeft = 0;
+        if (ThisLeft > ParenWidth - ThisWidth) ThisLeft = ParenWidth - ThisWidth;
         // 截取图片
         IonImg();
     });
 
     // 向左转
-    $(".j-cae").on("click",".j-turn-left[caeActive='true']",function () {
-        Rotate -= 90;
+    var jTurnLeft = document.querySelectorAll('.j-turn-left');
+    jTurnLeft[0].addEventListener('click', function () {
+        var state = this.attributes.caeActive.value;
+        if (state === 'true') {
+            Rotate -= 90;
 
-        // 旋转
-        RotateDirection(Rotate);
+            // 旋转
+            RotateDirection(Rotate);
 
-        // 数据初始化
-        InitData();
+            // 数据初始化
+            InitData();
 
-        ctx.translate(AreaWidth / 2, AreaWidth / 2);
-        ctx.rotate(-90 * Math.PI / 180);
-        ctx.translate(-AreaWidth / 2, -AreaWidth / 2);
-        // 截取图片
-        IonImg();
+            ctx.translate(AreaWidth / 2, AreaWidth / 2);
+            ctx.rotate(-90 * Math.PI / 180);
+            ctx.translate(-AreaWidth / 2, -AreaWidth / 2);
+            // 截取图片
+            IonImg();
+        }
     });
 
     // 向右转
-    $(".j-cae").on("click", ".j-turn-right[caeActive='true']", function () {
-        Rotate += 90;
-        // 旋转
-        RotateDirection(Rotate);
+    var jTurnRight = document.querySelectorAll('.j-turn-right');
+    jTurnRight[0].addEventListener('click', function () {
+        var state = this.attributes.caeActive.value;
+        if (state === 'true') {
+            Rotate += 90;
+            // 旋转
+            RotateDirection(Rotate);
 
-        // 数据初始化
-        InitData();
+            // 数据初始化
+            InitData();
 
-        // 取得截取坐标
-        ctx.translate(AreaWidth / 2, AreaWidth / 2);
-        ctx.rotate(90 * Math.PI / 180);
-        ctx.translate(-AreaWidth / 2, -AreaWidth / 2);
-        // 截取图片
-        IonImg();
+            // 取得截取坐标
+            ctx.translate(AreaWidth / 2, AreaWidth / 2);
+            ctx.rotate(90 * Math.PI / 180);
+            ctx.translate(-AreaWidth / 2, -AreaWidth / 2);
+            // 截取图片
+            IonImg();
+        }
     });
 
     // 缩放
-    $(".j-cae").on("mousedown", ".j-cae-sch-btn[caeActive='true']", function(ev){
-        SchMou = true;
-        // 鼠标在选中区中的位置
-        SchRangeLeft = ev.pageX - $(this).offset().left;
+    var jCaeSchBtn = document.querySelectorAll('.j-cae-sch-btn');
+    jCaeSchBtn[0].addEventListener('mousedown', function (ev) {
+        var state = this.attributes.caeActive.value;
+        if (state === 'true') {
+            SchMou = true;
+            // 鼠标在选中区中的位置
+            var text = jCaeSchBtn[0].style.transform;
+            var translateX = Number(text.substring(text.indexOf('(') + 1, text.indexOf('p')));
+            SchRangeLeft = ev.pageX - getElementLeft(jCaeSchBtn[0]) - translateX;
+        }
     });
 
     // 进度条
-    $(document).mousemove(function (ev) {
+    document.addEventListener('mousemove', function (ev) {
         SchLeft = ev.pageX - SchParentLeft - SchRangeLeft;
         // 更改截取区域大小
         if (SchMou && SchLeft <= SchParentWidth && SchLeft >= 0) {
@@ -394,14 +487,16 @@ var CanvasAvatar=(function () {
             // 进度条位置设置
             RippleScrollBarPositionSet(SchLeft);
         }
-    })
-
-    // 图片下载
-    $(".j-cae").on("click", ".j-cae-dld[caeActive='true']", function () {
-        ImageDown('png');
     });
 
-    $(window).resize(function () {
+    // 图片下载
+    var jCaeDld = document.querySelectorAll('.j-cae-dld');
+    jCaeDld[0].addEventListener('click', function () {
+        var state = this.attributes.caeActive.value;
+        if (state === 'true') ImageDown('png');
+    });
+
+    window.addEventListener('resize', function () {
         // 数据初始化
         InitData();
     });
@@ -419,10 +514,10 @@ var CanvasAvatar=(function () {
 
 CanvasAvatar.getSizeMax(5024);
 CanvasAvatar.setRemovalImgSize(210,210);
-$(".cae-sn").click(function () {
-    console.log("ppp");
+var caeSn = document.querySelectorAll('.cae-sn');
+caeSn[0].addEventListener('click', function () {
     console.log(CanvasAvatar.getImg())
-    $(".j-cae-img").prop('src',CanvasAvatar.getImg().DataURL)
+    // $(".j-cae-img").prop('src',CanvasAvatar.getImg().DataURL)
     // CanvasAvatar.InitDome();
 });
 
