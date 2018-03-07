@@ -363,8 +363,11 @@ var CanvasAvatar=(function () {
     jCaeMb[0].addEventListener('mousedown', function (ev) {
         ThisConMou = true;
         // 鼠标在选中区中的位置
-        ClaRangeTop = ev.pageY - $(this).offset().top;
-        ClaRangeLeft = ev.pageX - $(this).offset().left;
+        var text = jCaeMb[0].style.transform;
+        var translateX = Number(text.substring(text.indexOf('(') + 1, text.indexOf('p')));
+        var translateY = Number(text.substring(text.lastIndexOf(',') + 1, text.lastIndexOf('p')));
+        ClaRangeTop = ev.pageY - getElementTop(this) - translateY;
+        ClaRangeLeft = ev.pageX - getElementLeft(this) - translateX;
     });
 
     // 截取区域拖动效果
@@ -461,10 +464,9 @@ var CanvasAvatar=(function () {
         if (state === 'true') {
             SchMou = true;
             // 鼠标在选中区中的位置
-            SchRangeLeft = ev.pageX - $(this).offset().left;
-            console.log($(this).offset().top)
-            console.log(getElementTop(jCaeSchBtn[0]))
-            console.log(this)
+            var text = jCaeSchBtn[0].style.transform;
+            var translateX = Number(text.substring(text.indexOf('(') + 1, text.indexOf('p')));
+            SchRangeLeft = ev.pageX - getElementLeft(jCaeSchBtn[0]) - translateX;
         }
     });
 
